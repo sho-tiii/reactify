@@ -169,6 +169,27 @@
             position: relative;
             z-index: 10;
             animation: nucleus-color 12s infinite linear;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        /* Element symbol display - Enhanced for better visibility */
+        .element-symbol {
+            font-size: 26px;
+            font-weight: bold;
+            color: #000000; /* Changed to black for better contrast */
+            background-color: rgba(255, 255, 255, 0.85); /* Added semi-transparent white background */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
         }
         
         @keyframes nucleus-color {
@@ -342,7 +363,9 @@
         
         <!-- Pure CSS Atom Animation -->
         <div class="atom-container">
-            <div class="nucleus"></div>
+            <div class="nucleus">
+                <div id="elementSymbol" class="element-symbol"></div>
+            </div>
             
             <!-- First electron orbit -->
             <div class="electron-shell orbit-1">
@@ -372,6 +395,33 @@
     </div>
     
     <script>
+        // Common elements to display in the nucleus
+        const elements = [
+            "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", 
+            "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca",
+            "Fe", "Cu", "Zn", "Ag", "Au", "Hg", "Pb", "U"
+        ];
+        
+        // Function to fade in a random element symbol
+        function cycleElementSymbols() {
+            const elementSymbol = document.getElementById('elementSymbol');
+            const currentElement = elements[Math.floor(Math.random() * elements.length)];
+            
+            // Fade out current element
+            elementSymbol.style.opacity = 0;
+            
+            // After fade out, change text and fade in new element
+            setTimeout(() => {
+                elementSymbol.textContent = currentElement;
+                elementSymbol.style.opacity = 1;
+                
+                // Schedule next element change
+                setTimeout(() => {
+                    cycleElementSymbols();
+                }, 2000); // Show each element for 2 seconds
+            }, 800); // Wait for fade out (0.8s)
+        }
+        
         // Star creation function
         function createStars() {
             const starField = document.getElementById('starField');
@@ -419,6 +469,9 @@
             
             // Prepare star field
             createStars();
+            
+            // Start the element symbol cycling
+            cycleElementSymbols();
             
             // Set up click event for interactive word
             const interactiveWord = document.getElementById('interactive');
