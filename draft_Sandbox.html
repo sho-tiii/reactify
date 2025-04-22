@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodic Table Sandbox</title>
+    <style>
+        body {
+            background-color: #111111;
+            font-family: Arial, sans-serif;
+            opacity: 0;
+            transform: scale(0.95);
+            animation: fadeInScale 1.2s ease-out forwards;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Enhanced header styling */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 3rem;
+            background: linear-gradient(90deg, #0a0a0a, #111111, #0a0a0a);
+            border-bottom: 1px solid #333;
+            width: 100%;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+            box-sizing: border-box;
+        }
+
+        /* Left section with logo and tagline */
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding-left: 30px;
+            min-width: 150px;
+        }
+
+        .gradient-word {
+            display: inline-block;
+            position: relative;
+            white-space: nowrap;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .tagline {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: -2px;
+            letter-spacing: 0.5px;
+            margin-left: 10px;
+        }
+
+        /* Right section with element count and action button */
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding-right: 30px;
+            min-width: 150px;
+        }
+
+        .action-button {
+            color: white;
+            font-size: 0.9rem;
+            padding: 0.5rem 1.2rem;
+            background: linear-gradient(90deg, #2E3192, #662D91);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-right: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .gradient-word span:nth-child(1) { color: #8CC63F; }
+        .gradient-word span:nth-child(2) { color: #39B54A; }
+        .gradient-word span:nth-child(3) { color: #00AEEF; }
+        .gradient-word span:nth-child(4) { color: #0072BC; }
+        .gradient-word span:nth-child(5) { color: #2E3192; }
+        .gradient-word span:nth-child(6) { color: #662D91; }
+        .gradient-word span:nth-child(7) { color: #92278F; }
+        .gradient-word span:nth-child(8) { color: #EC008C; }
+        .gradient-word span:nth-child(9) { color: #ED145B; }
+        .gradient-word span:nth-child(10) { color: #ED1C24; }
+        .gradient-word span:nth-child(11) { color: #F7931E; }
+
+        .gradient-word:hover span {
+            opacity: 0;
+        }
+
+        .gradient-word::after {
+            content: "reactify";
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(to right, #8CC63F, #39B54A, #00AEEF, #0072BC, #2E3192, #662D91, #92278F, #EC008C, #ED145B, #ED1C24, #F7931E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .gradient-word:hover::after {
+            opacity: 1;
+        }
+
+        .tagline {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: -2px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Center section with search */
+        .header-center {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            margin: 0 2.5rem;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            padding-right: 2.5rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: #555;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+        }
+
+        .search-input::placeholder {
+            color: #666;
+        }
+
+        .search-button {
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: #777;
+            cursor: pointer;
+            padding: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Right section elements */
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding-right: 15px;
+        }
+
+        .element-count {
+            font-size: 0.9rem;
+            color: #999;
+            padding: 0.25rem 0.5rem;
+            border-left: 2px solid #333;
+            padding-left: 1rem;
+        }
+
+        .action-button:hover {
+            background: linear-gradient(90deg, #3a3db5, #7e36af);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(102, 45, 145, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .action-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 2px rgba(102, 45, 145, 0.4);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            header {
+                padding: 0.75rem 1.5rem;
+            }
+            
+            .header-center {
+                margin: 0 1rem;
+            }
+            
+            .header-right {
+                gap: 1rem;
+            }
+        }
+
+        /* Sandbox-specific styles */
+        .sandbox-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            color: white;
+        }
+
+        .sandbox-title {
+            color: white;
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sandbox-intro {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        .reaction-builder {
+            background: rgba(30, 30, 30, 0.7);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            border: 1px solid #333;
+            margin-bottom: 2rem;
+            animation: pulseGlow 8s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            }
+            100% {
+                box-shadow: 0 4px 30px rgba(70, 130, 180, 0.3);
+            }
+        }
+
+        .reaction-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .element-selector {
+            min-width: 180px;
+            position: relative;
+        }
+
+        .element-display {
+            width: 120px;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            position: relative;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .element-1 {
+            background: linear-gradient(135deg, #2D5986, #4682B4);
+            box-shadow: 0 4px 12px rgba(70, 130, 180, 0.3);
+        }
+
+        .element-2 {
+            background: linear-gradient(135deg, #722F37, #9E3F49);
+            box-shadow: 0 4px 12px rgba(158, 63, 73, 0.3);
+        }
+
+        .element-display:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .element-symbol {
+            font-size: 2.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .element-name {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .element-number {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .plus-sign, .equals-sign {
+            font-size: 2.5rem;
+            color: #666;
+            margin: 0 0.5rem;
+            user-select: none;
+        }
+
+        .result {
+            width: 180px;
+            height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1A5276, #2980B9);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotateGradient 10s linear infinite;
+        }
+
+        @keyframes rotateGradient {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .result-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .result-formula {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-name {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-type {
+            font-size: 0.8rem;
+            color: #aaa;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            margin-top: 0.5rem;
+        }
+
+        .element-dropdown {
+            position: relative;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .dropdown-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ddd;
+            font-size: 0.9rem;
+        }
+
+        .element-select {
+            width: 100%;
+            padding: 0.7rem;
+            background-color: #222;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 6px;
+            outline: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .element-select:focus {
+            border-color: #4682B4;
+            box-shadow: 0 0 0 2px rgba(70, 130, 180, 0.2);
+        }
+
+        .element-select option {
+            background-color: #333;
+        }
+
+        .reaction-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+
+        .control-button {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .mix-button {
+            background: linear-gradient(90deg, #3a7bd5, #2980B9);
+            color: white;
+            box-shadow: 0 2px 8px rgba(42, 128, 185, 0.4);
+        }
+
+        .mix-button:hover {
+            background: linear-gradient(90deg, #4a8be5, #3990C9);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(42, 128, 185, 0.5);
+        }
+
+        .reset-button {
+            background: rgba(40, 40, 40, 0.8);
+            color: #ddd;
+            border: 1px solid #444;
+        }
+
+        .reset-button:hover {
+            background: rgba(50, 50, 50, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .reaction-history {
+            background: rgba(20, 20, 20, 0.7);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid #333;
+        }
+
+        .history-title {
+            font-size: 1.2rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+        }
+
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s ease;
+        }
+
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .history-formula {
+            flex-grow: 1;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .history-result {
+            margin-left: 1rem;
+            color: #4682B4;
+            font-weight: 500;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+
+        /* Element category colors for dropdowns */
+        .alkali { color: #9E3F49; }
+        .alkaline { color: #CC6600; }
+        .transition { color: #4682B4; }
+        .metalloid { color: #6B8E23; }
+        .nonmetal { color: #5E6A75; }
+        .halogen { color: #7851A9; }
+        .noble { color: #CD6155; }
+        .lanthanide { color: #2980B9; }
+        .actinide { color: #27AE60; }
+
+        .footer {
+            margin-top: auto;
+            padding: 1.5rem 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.8);
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #222;
+        }
+
+        /* Animations for the sandbox */
+        @keyframes elementPulse {
+            0% {
+                box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        .electron {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .electron-1 {
+            animation: electron1 4s linear infinite;
+        }
+
+        .electron-2 {
+            animation: electron2 6s linear infinite;
+        }
+
+        .electron-3 {
+            animation: electron3 5s linear infinite;
+        }
+
+        @keyframes electron1 {
+            0% {
+                transform: rotate(0deg) translateX(50px);
+            }
+            100% {
+                transform: rotate(360deg) translateX(50px);
+            }
+        }
+
+        @keyframes electron2 {
+            0% {
+                transform: rotate(120deg) translateX(50px);
+            }
+            100% {
+                transform: rotate(480deg) translateX(50px);
+            }
+        }
+
+        @keyframes electron3 {
+            0% {
+                transform: rotate(240deg) translateX(50px);
+            }
+            100% {
+                transform: rotate(600deg) translateX(50px);
+            }
+        }
+
+        .element-dropdown optgroup {
+            font-weight: bold;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <div class="gradient-word">
+                <span>i</span><span>n</span><span>t</span><span>e</span><span>r</span><span>a</span><span>c</span><span>t</span><span>i</span><span>v</span><span>e</span>
+            </div>
+            <div class="tagline">Explore the elements</div>
+        </div>
+        <div class="header-center">
+            <div class="search-container">
+                <input type="text" placeholder="Search elements..." class="search-input">
+                <button class="search-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="element-count">118 Elements</div>
+            <a href="draft_TwoMain.html" class="action-button">Periodic Table</a>
+        </div>
+    </header>
+
+    <div class="sandbox-container">
+        <h1 class="sandbox-title">Chemical Reaction Sandbox</h1>
+        
+        <p class="sandbox-intro">
+            Combine elements to discover chemical reactions and compounds. Select two elements from the periodic table and see what they create together. Explore the fascinating world of chemical bonding and reaction products.
+        </p>
+        
+        <div class="reaction-builder">
+            <div class="reaction-container">
+                <div class="element-selector">
+                    <div class="element-dropdown">
+                        <label class="dropdown-label" for="element1">First Element</label>
+                        <select id="element1" class="element-select">
+                            <option value="" selected disabled>Select element</option>
+                            <optgroup label="Metals">
+                                <option value="H" class="nonmetal">Hydrogen (H)</option>
+                                <option value="Li" class="alkali">Lithium (Li)</option>
+                                <option value="Na" class="alkali">Sodium (Na)</option>
+                                <option value="K" class="alkali">Potassium (K)</option>
+                                <option value="Mg" class="alkaline">Magnesium (Mg)</option>
+                                <option value="Ca" class="alkaline">Calcium (Ca)</option>
+                                <option value="Fe" class="transition">Iron (Fe)</option>
+                                <option value="Cu" class="transition">Copper (Cu)</option>
+                                <option value="Zn" class="transition">Zinc (Zn)</option>
+                                <option value="Al" class="transition">Aluminum (Al)</option>
+                            </optgroup>
+                            <optgroup label="Nonmetals">
+                                <option value="O" class="nonmetal">Oxygen (O)</option>
+                                <option value="N" class="nonmetal">Nitrogen (N)</option>
+                                <option value="C" class="nonmetal">Carbon (C)</option>
+                                <option value="P" class="nonmetal">Phosphorus (P)</option>
+                                <option value="S" class="nonmetal">Sulfur (S)</option>
+                            </optgroup>
+                            <optgroup label="Halogens">
+                                <option value="F" class="halogen">Fluorine (F)</option>
+                                <option value="Cl" class="halogen">Chlorine (Cl)</option>
+                                <option value="Br" class="halogen">Bromine (Br)</option>
+                                <option value="I" class="halogen">Iodine (I)</option>
+                            </optgroup>
+                            <optgroup label="Noble Gases">
+                                <option value="He" class="noble">Helium (He)</option>
+                                <option value="Ne" class="noble">Neon (Ne)</option>
+                                <option value="Ar" class="noble">Argon (Ar)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    
+                    <div class="element-display element-1">
+                        <div class="element-number">?</div>
+                        <div class="element-symbol">?</div>
+                        <div class="element-name">Select Element</div>
+                    </div>
+                </div>
+                
+                <div class="plus-sign">+</div>
+                
+                <div class="element-selector">
+                    <div class="element-dropdown">
+                        <label class="dropdown-label" for="element2">Second Element</label>
+                        <select id="element2" class="element-select">
+                            <option value="" selected disabled>Select element</option>
+                            <optgroup label="Metals">
+                                <option value="H" class="nonmetal">Hydrogen (H)</option>
+                                <option value="Li" class="alkali">Lithium (Li)</option>
+                                <option value="Na" class="alkali">Sodium (Na)</option>
+                                <option value="K" class="alkali">Potassium (K)</option>
+                                <option value="Mg" class="alkaline">Magnesium (Mg)</option>
+                                <option value="Ca" class="alkaline">Calcium (Ca)</option>
+                                <option value="Fe" class="transition">Iron (Fe)</option>
+                                <option value="Cu" class="transition">Copper (Cu)</option>
+                                <option value="Zn" class="transition">Zinc (Zn)</option>
+                                <option value="Al" class="transition">Aluminum (Al)</option>
+                            </optgroup>
+                            <optgroup label="Nonmetals">
+                                <option value="O" class="nonmetal">Oxygen (O)</option>
+                                <option value="N" class="nonmetal">Nitrogen (N)</option>
+                                <option value="C" class="nonmetal">Carbon (C)</option>
+                                <option value="P" class="nonmetal">Phosphorus (P)</option>
+                                <option value="S" class="nonmetal">Sulfur (S)</option>
+                            </optgroup>
+                            <optgroup label="Halogens">
+                                <option value="F" class="halogen">Fluorine (F)</option>
+                                <option value="Cl" class="halogen">Chlorine (Cl)</option>
+                                <option value="Br" class="halogen">Bromine (Br)</option>
+                                <option value="I" class="halogen">Iodine (I)</option>
+                            </optgroup>
+                            <optgroup label="Noble Gases">
+                                <option value="He" class="noble">Helium (He)</option>
+                                <option value="Ne" class="noble">Neon (Ne)</option>
+                                <option value="Ar" class="noble">Argon (Ar)</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    
+                    <div class="element-display element-2">
+                        <div class="element-number">?</div>
+                        <div class="element-symbol">?</div>
+                        <div class="element-name">Select Element</div>
+                    </div>
+                </div>
+                
+                <div class="equals-sign">=</div>
+                
+                <div class="result">
+                    <div class="electron electron-1"></div>
+                    <div class="electron electron-2"></div>
+                    <div class="electron electron-3"></div>
+                    <div class="result-content">
+                        <div class="result-formula">?</div>
+                        <div class="result-name">Choose elements</div>
+                        <div class="result-type">No reaction</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="reaction-controls">
+                <button class="control-button mix-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 5L21 12M21 12L13 19M21 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Mix Elements
+                </button>
+                <button class="control-button reset-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 4V9H9M20 20V15H15M20 9L15.5 15.5M4 15L8.5 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Reset
+                </button>
+            </div>
+        </div>
+        
+        
+        
+        <!-- Info Cards Section -->
+        <div class="element-info-cards">
+            <div class="info-card">
+                <h3 class="info-card-title">How It Works</h3>
+                <p class="info-card-text">
+                    Select two elements from the periodic table using the dropdown menus. Click "Mix Elements" to see the 
+                    result of their chemical reaction. The sandbox will display the chemical formula, compound name, 
+                    and reaction type. 
+                </p>
+                <p class="info-card-text">
+                    This educational tool demonstrates basic chemical bonding principles and helps visualize 
+                    how elements combine to form compounds.
+                </p>
+            </div>
+            
+            <div class="info-card">
+                <h3 class="info-card-title">Bond Types</h3>
+                <ul class="info-card-list">
+                    <li><span class="bond-type">Ionic:</span> Electron transfer between metals and nonmetals</li>
+                    <li><span class="bond-type">Covalent:</span> Electron sharing between nonmetals</li>
+                    <li><span class="bond-type">Metallic:</span> Electron sharing between metals</li>
+                    <li><span class="bond-type">Coordinate:</span> Both electrons from one atom</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Periodic Trends Section -->
+        <div class="periodic-trends">
+            <h2 class="trends-title">Periodic Trends</h2>
+            <div class="trends-container">
+                <div class="trend-item">
+                    <div class="trend-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="9" stroke="#4682B4" stroke-width="2"/>
+                            <circle cx="12" cy="12" r="3" fill="#4682B4"/>
+                        </svg>
+                    </div>
+                    <div class="trend-info">
+                        <h3>Atomic Radius</h3>
+                        <p>Increases down groups, decreases across periods</p>
+                    </div>
+                </div>
+                
+                <div class="trend-item">
+                    <div class="trend-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 4V20M4 12H20" stroke="#9E3F49" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="trend-info">
+                        <h3>Electronegativity</h3>
+                        <p>Increases across periods, decreases down groups</p>
+                    </div>
+                </div>
+                
+                <div class="trend-item">
+                    <div class="trend-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18" stroke="#6B8E23" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M12 18C12 19.6569 10.6569 21 9 21C7.34315 21 6 19.6569 6 18C6 16.3431 7.34315 15 9 15" stroke="#6B8E23" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="trend-info">
+                        <h3>Reactivity</h3>
+                        <p>Metals: increases down groups, Nonmetals: decreases down groups</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>© 2025 Interactive Periodic Table Sandbox | Educational Chemistry Tool</p>
+    </footer>
+
+    <script>
+        // Element data with properties
+const elementData = {
+    // Metals
+    "H": { number: 1, name: "Hydrogen", category: "nonmetal", color: "#5E6A75" },
+    "Li": { number: 3, name: "Lithium", category: "alkali", color: "#9E3F49" },
+    "Na": { number: 11, name: "Sodium", category: "alkali", color: "#9E3F49" },
+    "K": { number: 19, name: "Potassium", category: "alkali", color: "#9E3F49" },
+    "Mg": { number: 12, name: "Magnesium", category: "alkaline", color: "#CC6600" },
+    "Ca": { number: 20, name: "Calcium", category: "alkaline", color: "#CC6600" },
+    "Fe": { number: 26, name: "Iron", category: "transition", color: "#4682B4" },
+    "Cu": { number: 29, name: "Copper", category: "transition", color: "#4682B4" },
+    "Zn": { number: 30, name: "Zinc", category: "transition", color: "#4682B4" },
+    "Al": { number: 13, name: "Aluminum", category: "transition", color: "#4682B4" },
+    
+    // Nonmetals
+    "O": { number: 8, name: "Oxygen", category: "nonmetal", color: "#5E6A75" },
+    "N": { number: 7, name: "Nitrogen", category: "nonmetal", color: "#5E6A75" },
+    "C": { number: 6, name: "Carbon", category: "nonmetal", color: "#5E6A75" },
+    "P": { number: 15, name: "Phosphorus", category: "nonmetal", color: "#5E6A75" },
+    "S": { number: 16, name: "Sulfur", category: "nonmetal", color: "#5E6A75" },
+    
+    // Halogens
+    "F": { number: 9, name: "Fluorine", category: "halogen", color: "#7851A9" },
+    "Cl": { number: 17, name: "Chlorine", category: "halogen", color: "#7851A9" },
+    "Br": { number: 35, name: "Bromine", category: "halogen", color: "#7851A9" },
+    "I": { number: 53, name: "Iodine", category: "halogen", color: "#7851A9" },
+    
+    // Noble Gases
+    "He": { number: 2, name: "Helium", category: "noble", color: "#CD6155" },
+    "Ne": { number: 10, name: "Neon", category: "noble", color: "#CD6155" },
+    "Ar": { number: 18, name: "Argon", category: "noble", color: "#CD6155" }
+};
+
+// Reaction data - defines what happens when elements are combined
+const reactionData = {
+    "H+O": { formula: "H₂O", name: "Water", type: "Covalent Compound" },
+    "O+H": { formula: "H₂O", name: "Water", type: "Covalent Compound" },
+    "H+F": { formula: "HF", name: "Hydrogen Fluoride", type: "Covalent Compound" },
+    "F+H": { formula: "HF", name: "Hydrogen Fluoride", type: "Covalent Compound" },
+    "H+Cl": { formula: "HCl", name: "Hydrochloric Acid", type: "Covalent Compound" },
+    "Cl+H": { formula: "HCl", name: "Hydrochloric Acid", type: "Covalent Compound" },
+    "H+Br": { formula: "HBr", name: "Hydrobromic Acid", type: "Covalent Compound" },
+    "Br+H": { formula: "HBr", name: "Hydrobromic Acid", type: "Covalent Compound" },
+    "Na+Cl": { formula: "NaCl", name: "Sodium Chloride", type: "Ionic Compound" },
+    "Cl+Na": { formula: "NaCl", name: "Sodium Chloride", type: "Ionic Compound" },
+    "K+Cl": { formula: "KCl", name: "Potassium Chloride", type: "Ionic Compound" },
+    "Cl+K": { formula: "KCl", name: "Potassium Chloride", type: "Ionic Compound" },
+    "C+O": { formula: "CO₂", name: "Carbon Dioxide", type: "Covalent Compound" },
+    "O+C": { formula: "CO₂", name: "Carbon Dioxide", type: "Covalent Compound" },
+    "Fe+O": { formula: "Fe₂O₃", name: "Iron(III) Oxide", type: "Ionic Compound" },
+    "O+Fe": { formula: "Fe₂O₃", name: "Iron(III) Oxide", type: "Ionic Compound" },
+    "Mg+O": { formula: "MgO", name: "Magnesium Oxide", type: "Ionic Compound" },
+    "O+Mg": { formula: "MgO", name: "Magnesium Oxide", type: "Ionic Compound" },
+    "Ca+O": { formula: "CaO", name: "Calcium Oxide", type: "Ionic Compound" },
+    "O+Ca": { formula: "CaO", name: "Calcium Oxide", type: "Ionic Compound" },
+    "Cu+S": { formula: "CuS", name: "Copper Sulfide", type: "Ionic Compound" },
+    "S+Cu": { formula: "CuS", name: "Copper Sulfide", type: "Ionic Compound" },
+    "Al+O": { formula: "Al₂O₃", name: "Aluminum Oxide", type: "Ionic Compound" },
+    "O+Al": { formula: "Al₂O₃", name: "Aluminum Oxide", type: "Ionic Compound" },
+    "Na+F": { formula: "NaF", name: "Sodium Fluoride", type: "Ionic Compound" },
+    "F+Na": { formula: "NaF", name: "Sodium Fluoride", type: "Ionic Compound" },
+    "Li+O": { formula: "Li₂O", name: "Lithium Oxide", type: "Ionic Compound" },
+    "O+Li": { formula: "Li₂O", name: "Lithium Oxide", type: "Ionic Compound" },
+    "N+H": { formula: "NH₃", name: "Ammonia", type: "Covalent Compound" },
+    "H+N": { formula: "NH₃", name: "Ammonia", type: "Covalent Compound" },
+    "Mg+N": { formula: "Mg₃N₂", name: "Magnesium Nitride", type: "Ionic Compound" },
+    "N+Mg": { formula: "Mg₃N₂", name: "Magnesium Nitride", type: "Ionic Compound" }
+};
+
+// Initialize elements on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Get DOM elements
+    const element1Select = document.getElementById('element1');
+    const element2Select = document.getElementById('element2');
+    const element1Display = document.querySelector('.element-1');
+    const element2Display = document.querySelector('.element-2');
+    const resultFormula = document.querySelector('.result-formula');
+    const resultName = document.querySelector('.result-name');
+    const resultType = document.querySelector('.result-type');
+    const mixButton = document.querySelector('.mix-button');
+    const resetButton = document.querySelector('.reset-button');
+    const historyList = document.querySelector('.history-list');
+    const searchInput = document.querySelector('.search-input');
+    
+    // Event listeners for element selection
+    element1Select.addEventListener('change', function() {
+        updateElementDisplay(this.value, element1Display, 1);
+    });
+    
+    element2Select.addEventListener('change', function() {
+        updateElementDisplay(this.value, element2Display, 2);
+    });
+    
+    // Mix button - create reaction
+    mixButton.addEventListener('click', function() {
+        const elem1 = element1Select.value;
+        const elem2 = element2Select.value;
+        
+        if (!elem1 || !elem2) {
+            alert('Please select both elements to create a reaction');
+            return;
+        }
+        
+        createReaction(elem1, elem2);
+    });
+    
+    // Reset button
+    resetButton.addEventListener('click', function() {
+        resetSelections();
+    });
+    
+    // Search functionality
+    searchInput.addEventListener('input', function() {
+        searchElements(this.value);
+    });
+    
+    // Update element display when selected
+    function updateElementDisplay(symbol, displayEl, position) {
+        if (!symbol) {
+            displayEl.innerHTML = `
+                <div class="element-number">?</div>
+                <div class="element-symbol">?</div>
+                <div class="element-name">Select Element</div>
+            `;
+            return;
+        }
+        
+        const element = elementData[symbol];
+        if (!element) return;
+        
+        // Update display with element data
+        displayEl.innerHTML = `
+            <div class="element-number">${element.number}</div>
+            <div class="element-symbol">${symbol}</div>
+            <div class="element-name">${element.name}</div>
+        `;
+        
+        // Update background color based on element category
+        if (position === 1) {
+            displayEl.style.background = `linear-gradient(135deg, ${lightenColor(element.color, 20)}, ${element.color})`;
+        } else {
+            displayEl.style.background = `linear-gradient(135deg, ${lightenColor(element.color, 15)}, ${element.color})`;
+        }
+    }
+    
+    // Create reaction between two elements
+    function createReaction(elem1, elem2) {
+        const reactionKey = `${elem1}+${elem2}`;
+        const reaction = reactionData[reactionKey];
+        
+        // Update result display
+        if (reaction) {
+            resultFormula.textContent = reaction.formula;
+            resultName.textContent = reaction.name;
+            resultType.textContent = reaction.type;
+            
+            // Change result color based on reaction type
+            if (reaction.type.includes('Ionic')) {
+                document.querySelector('.result').style.background = 'linear-gradient(135deg, #1A5276, #2980B9)';
+            } else if (reaction.type.includes('Covalent')) {
+                document.querySelector('.result').style.background = 'linear-gradient(135deg, #117A65, #16A085)';
+            } else if (reaction.type.includes('Metallic')) {
+                document.querySelector('.result').style.background = 'linear-gradient(135deg, #7D6608, #B7950B)';
+            }
+            
+            // Add to history
+            addToHistory(elem1, elem2, reaction);
+            
+            // Animate reaction
+            animateReaction();
+        } else {
+            // No reaction found
+            resultFormula.textContent = "No Reaction";
+            resultName.textContent = "Elements don't react";
+            resultType.textContent = "Try different elements";
+            document.querySelector('.result').style.background = 'linear-gradient(135deg, #515A5A, #707B7C)';
+        }
+    }
+    
+    // Add reaction to history
+    function addToHistory(elem1, elem2, reaction) {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        historyItem.innerHTML = `
+            <div class="history-formula">${elem1} + ${elem2} → </div>
+            <div class="history-result">${reaction.formula} (${reaction.name})</div>
+        `;
+        
+        // Add to the beginning of the list
+        if (historyList.firstChild) {
+            historyList.insertBefore(historyItem, historyList.firstChild);
+        } else {
+            historyList.appendChild(historyItem);
+        }
+        
+        // Limit history items to 10
+        while (historyList.children.length > 10) {
+            historyList.removeChild(historyList.lastChild);
+        }
+    }
+    
+    // Reset selections
+    function resetSelections() {
+        element1Select.value = '';
+        element2Select.value = '';
+        
+        updateElementDisplay('', element1Display, 1);
+        updateElementDisplay('', element2Display, 2);
+        
+        resultFormula.textContent = "?";
+        resultName.textContent = "Choose elements";
+        resultType.textContent = "No reaction";
+        
+        document.querySelector('.result').style.background = 'linear-gradient(135deg, #1A5276, #2980B9)';
+    }
+    
+    // Search elements
+    function searchElements(query) {
+        query = query.toLowerCase();
+        
+        // Filter through element options
+        Array.from(element1Select.options).forEach(option => {
+            const text = option.text.toLowerCase();
+            if (text.includes(query) || !query) {
+                option.style.display = '';
+            } else {
+                option.style.display = 'none';
+            }
+        });
+        
+        Array.from(element2Select.options).forEach(option => {
+            const text = option.text.toLowerCase();
+            if (text.includes(query) || !query) {
+                option.style.display = '';
+            } else {
+                option.style.display = 'none';
+            }
+        });
+    }
+    
+    // Animation for reaction
+    function animateReaction() {
+        const result = document.querySelector('.result');
+        result.classList.add('reacting');
+        
+        // Create particles for reaction animation
+        for (let i = 0; i < 10; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'reaction-particle';
+            
+            // Random position and size
+            const size = Math.random() * 8 + 2;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}%`;
+            particle.style.top = `${Math.random() * 100}%`;
+            
+            // Add to result container
+            result.appendChild(particle);
+            
+            // Remove after animation
+            setTimeout(() => {
+                particle.remove();
+            }, 1500);
+        }
+        
+        // Remove animation class after completion
+        setTimeout(() => {
+            result.classList.remove('reacting');
+        }, 1500);
+    }
+    
+    // Utility function to lighten a color
+    function lightenColor(color, percent) {
+        const num = parseInt(color.replace('#', ''), 16);
+        const amt = Math.round(2.55 * percent);
+        const R = (num >> 16) + amt;
+        const G = (num >> 8 & 0x00FF) + amt;
+        const B = (num & 0x0000FF) + amt;
+        
+        return '#' + (
+            0x1000000 +
+            (R < 255 ? (R < 1 ? 0 : R) : 255) * 0x10000 +
+            (G < 255 ? (G < 1 ? 0 : G) : 255) * 0x100 +
+            (B < 255 ? (B < 1 ? 0 : B) : 255)
+        ).toString(16).slice(1);
+    }
+    
+    // Add CSS for reaction animations
+    const style = document.createElement('style');
+    style.textContent = `
+        .reaction-particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            z-index: 10;
+            animation: particleMove 1.5s ease-out forwards;
+        }
+        
+        @keyframes particleMove {
+            0% {
+                transform: scale(0) translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) translate(
+                    calc(${Math.random() * 200 - 100}px),
+                    calc(${Math.random() * 200 - 100}px)
+                );
+                opacity: 0;
+            }
+        }
+        
+        .reacting {
+            animation: reactionPulse 0.8s ease;
+        }
+        
+        @keyframes reactionPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    `;
+    document.head.appendChild(style);
+});
+    </script>
+</body>
+</html>

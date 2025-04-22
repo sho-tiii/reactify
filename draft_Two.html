@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Periodic Elements</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #111111;
+            font-family: Arial, sans-serif;
+            opacity: 0;
+            transform: scale(0.95);
+            animation: fadeInScale 1.2s ease-out forwards;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .gradient-word span:nth-child(1) { color: #8CC63F; }
+        .gradient-word span:nth-child(2) { color: #39B54A; }
+        .gradient-word span:nth-child(3) { color: #00AEEF; }
+        .gradient-word span:nth-child(4) { color: #0072BC; }
+        .gradient-word span:nth-child(5) { color: #2E3192; }
+        .gradient-word span:nth-child(6) { color: #662D91; }
+        .gradient-word span:nth-child(7) { color: #92278F; }
+        .gradient-word span:nth-child(8) { color: #EC008C; }
+        .gradient-word span:nth-child(9) { color: #ED145B; }
+        .gradient-word span:nth-child(10) { color: #ED1C24; }
+        .gradient-word span:nth-child(11) { color: #F7931E; }
+
+        .gradient-word {
+            display: inline-block;
+            position: relative;
+            white-space: nowrap;
+        }
+        .gradient-word span {
+            transition: opacity 0.3s ease;
+        }
+        .gradient-word:hover span {
+            opacity: 0;
+        }
+        .gradient-word::after {
+            content: "reactify";
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(to right, #8CC63F, #39B54A, #00AEEF, #0072BC, #2E3192, #662D91, #92278F, #EC008C, #ED145B, #ED1C24, #F7931E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+        .gradient-word:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-black flex items-center justify-center h-screen">
+    <div class="text-center px-4">
+        <h1 class="text-6xl md:text-7xl font-bold text-white">
+            The 
+            <a href="draft_TwoLinear.html" class="gradient-word">
+                <span>i</span><span>n</span><span>t</span><span>e</span><span>r</span><span>a</span><span>c</span><span>t</span><span>i</span><span>v</span><span>e</span>
+            </a>
+            <br>
+            periodic elements explorer
+        </h1>
+    </div>
+</body>
+</html>

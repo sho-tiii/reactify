@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodic Table</title>
+    <style>
+        body {
+            background-color: #111111;
+            font-family: Arial, sans-serif;
+            opacity: 0;
+            transform: scale(0.95);
+            animation: fadeInScale 1.2s ease-out forwards;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .periodic-table {
+            display: grid;
+            grid-template-columns: repeat(18, minmax(40px, 1fr));
+            grid-gap: 4px;
+            justify-content: center;
+            margin: 10px auto;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+
+        .element {
+            width: 100%;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            border: 1px solid #444;
+            position: relative;
+            background: linear-gradient(135deg, #222, #444);
+            transition: transform 0.2s, box-shadow 0.3s;
+            border-radius: 4px;
+        }
+
+        .element:hover {
+            transform: scale(1.1);
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+        
+        /* Categories */
+        .alkali {
+            background: linear-gradient(135deg, #722F37, #9E3F49);
+        }
+        
+        .alkaline {
+            background: linear-gradient(135deg, #994D00, #CC6600);
+        }
+        
+        .transition {
+            background: linear-gradient(135deg, #2D5986, #4682B4);
+        }
+        
+        .metalloid {
+            background: linear-gradient(135deg, #556B2F, #6B8E23);
+        }
+        
+        .nonmetal {
+            background: linear-gradient(135deg, #3B444B, #5E6A75);
+        }
+        
+        .halogen {
+            background: linear-gradient(135deg, #663399, #7851A9);
+        }
+        
+        .noble {
+            background: linear-gradient(135deg, #A93226, #CD6155);
+        }
+        
+        .lanthanide {
+            background: linear-gradient(135deg, #1A5276, #2980B9);
+        }
+        
+        .actinide {
+            background: linear-gradient(135deg, #196F3D, #27AE60);
+        }
+
+        /* Empty spaces for table structure */
+        .empty-space {
+            grid-column: span 1;
+            background: transparent;
+        }
+
+        /* Menu design with no container */
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 10px auto;
+            max-width: 1000px;
+            padding: 4px 0;
+        }
+
+        .menu a {
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .menu a:hover::before {
+            transform: translateX(0);
+        }
+
+        .menu a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu a:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Menu button colors with improved design */
+        #alkali-btn {
+            background-color: rgba(114, 47, 55, 0.9);
+        }
+        #alkali-btn:hover {
+            background-color: rgba(114, 47, 55, 1);
+        }
+        
+        #alkaline-btn {
+            background-color: rgba(153, 77, 0, 0.9);
+        }
+        #alkaline-btn:hover {
+            background-color: rgba(153, 77, 0, 1);
+        }
+        
+        #transition-btn {
+            background-color: rgba(45, 89, 134, 0.9);
+        }
+        #transition-btn:hover {
+            background-color: rgba(45, 89, 134, 1);
+        }
+        
+        #metalloid-btn {
+            background-color: rgba(85, 107, 47, 0.9);
+        }
+        #metalloid-btn:hover {
+            background-color: rgba(85, 107, 47, 1);
+        }
+        
+        #nonmetal-btn {
+            background-color: rgba(59, 68, 75, 0.9);
+        }
+        #nonmetal-btn:hover {
+            background-color: rgba(59, 68, 75, 1);
+        }
+        
+        #halogen-btn {
+            background-color: rgba(102, 51, 153, 0.9);
+        }
+        #halogen-btn:hover {
+            background-color: rgba(102, 51, 153, 1);
+        }
+        
+        #noble-btn {
+            background-color: rgba(169, 50, 38, 0.9);
+        }
+        #noble-btn:hover {
+            background-color: rgba(169, 50, 38, 1);
+        }
+        
+        #lanthanide-btn {
+            background-color: rgba(26, 82, 118, 0.9);
+        }
+        #lanthanide-btn:hover {
+            background-color: rgba(26, 82, 118, 1);
+        }
+        
+        #actinide-btn {
+            background-color: rgba(25, 111, 61, 0.9);
+        }
+        #actinide-btn:hover {
+            background-color: rgba(25, 111, 61, 1);
+        }
+        
+        /* Active button state - Modified to use input:checked instead of target */
+        .menu label.active {
+            border: 2px solid white;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+        }
+        
+        /* Reset button */
+        #reset-btn {
+            background: rgba(60, 60, 60, 0.9);
+        }
+        #reset-btn:hover {
+            background: rgba(80, 80, 80, 1);
+        }
+        
+        /* Hide the radio inputs */
+        .filter-input {
+            display: none;
+        }
+        
+        /* Highlight active category - Modified to use input:checked instead of target */
+        #alkali-input:checked ~ .periodic-table .element,
+        #alkaline-input:checked ~ .periodic-table .element,
+        #transition-input:checked ~ .periodic-table .element,
+        #metalloids-input:checked ~ .periodic-table .element,
+        #nonmetals-input:checked ~ .periodic-table .element,
+        #halogens-input:checked ~ .periodic-table .element,
+        #noble-gases-input:checked ~ .periodic-table .element,
+        #lanthanides-input:checked ~ .periodic-table .element,
+        #actinides-input:checked ~ .periodic-table .element {
+            opacity: 0.4;
+            filter: grayscale(70%);
+        }
+        
+        #alkali-input:checked ~ .periodic-table .alkali,
+        #alkaline-input:checked ~ .periodic-table .alkaline,
+        #transition-input:checked ~ .periodic-table .transition,
+        #metalloids-input:checked ~ .periodic-table .metalloid,
+        #nonmetals-input:checked ~ .periodic-table .nonmetal,
+        #halogens-input:checked ~ .periodic-table .halogen,
+        #noble-gases-input:checked ~ .periodic-table .noble,
+        #lanthanides-input:checked ~ .periodic-table .lanthanide,
+        #actinides-input:checked ~ .periodic-table .actinide {
+            opacity: 1;
+            filter: grayscale(0%);
+            transform: scale(1.05);
+            z-index: 5;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Add atomic number */
+        .element::before {
+            content: attr(data-number);
+            position: absolute;
+            top: 2px;
+            left: 4px;
+            font-size: 10px;
+            opacity: 0.8;
+        }
+        
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 15px auto;
+            max-width: 1000px;
+            padding: 8px 0;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 3px;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            margin-right: 8px;
+            border-radius: 3px;
+            border: 1px solid #444;
+        }
+
+        .legend-item span {
+            color: white;
+            font-size: 12px;
+        }
+
+        /* Separator rows */
+        .separator {
+            grid-column: span 18;
+            height: 8px;
+            background: transparent;
+        }
+        
+        /* Lanthanide and actinide labels */
+        .series-label {
+            grid-column: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            background: transparent;
+            border: none;
+        }
+        
+        .lanthanide-label {
+            color: #1A5276;
+        }
+        
+        .actinide-label {
+            color: #196F3D;
+        }
+        
+        /* Title styling */
+        .table-title {
+            color: white;
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .container {
+            padding: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        /* Style labels like the original a tags */
+        .menu label {
+            padding: 6px 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            display: inline-block;
+        }
+
+        .menu label::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .menu label:hover::before {
+            transform: translateX(0);
+        }
+
+        .menu label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu label:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 1280px) {
+            .periodic-table {
+                grid-template-columns: repeat(18, minmax(35px, 1fr));
+                padding: 0 10px;
+            }
+            
+            .element {
+                height: 38px;
+                font-size: 14px;
+            }
+            
+            .element::before {
+                font-size: 8px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .periodic-table {
+                grid-template-columns: repeat(18, minmax(25px, 1fr));
+                grid-gap: 2px;
+            }
+            
+            .element {
+                height: 30px;
+                font-size: 12px;
+            }
+            
+            .menu label {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+        }
+        /* Enhanced header styling */
+/* Enhanced header styling */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 3rem; /* Increased horizontal padding */
+    background: linear-gradient(90deg, #0a0a0a, #111111, #0a0a0a);
+    border-bottom: 1px solid #333;
+    width: 100%;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+/* Left section with logo and tagline */
+.header-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 30px; /* Significantly increased padding to move from edge */
+    min-width: 150px; /* Ensure minimum width */
+}
+
+.gradient-word {
+    display: inline-block;
+    position: relative;
+    white-space: nowrap;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 10px; /* Add margin to move text from edge */
+}
+
+.tagline {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: -2px;
+    letter-spacing: 0.5px;
+    margin-left: 10px; /* Match margin with gradient-word */
+}
+
+/* Right section with element count and action button */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-right: 30px; /* Significantly increased padding to move from edge */
+    min-width: 150px; /* Ensure minimum width */
+}
+
+.action-button {
+    color: white;
+    font-size: 0.9rem;
+    padding: 0.5rem 1.2rem;
+    background: linear-gradient(90deg, #2E3192, #662D91);
+    border-radius: 20px; /* CHANGE THIS TO 6px */
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-right: 15px;
+}
+
+.gradient-word span:nth-child(1) { color: #8CC63F; }
+.gradient-word span:nth-child(2) { color: #39B54A; }
+.gradient-word span:nth-child(3) { color: #00AEEF; }
+.gradient-word span:nth-child(4) { color: #0072BC; }
+.gradient-word span:nth-child(5) { color: #2E3192; }
+.gradient-word span:nth-child(6) { color: #662D91; }
+.gradient-word span:nth-child(7) { color: #92278F; }
+.gradient-word span:nth-child(8) { color: #EC008C; }
+.gradient-word span:nth-child(9) { color: #ED145B; }
+.gradient-word span:nth-child(10) { color: #ED1C24; }
+.gradient-word span:nth-child(11) { color: #F7931E; }
+
+.gradient-word:hover span {
+    opacity: 0;
+}
+
+.gradient-word::after {
+    content: "reactify";
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: linear-gradient(to right, #8CC63F, #39B54A, #00AEEF, #0072BC, #2E3192, #662D91, #92278F, #EC008C, #ED145B, #ED1C24, #F7931E);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.gradient-word:hover::after {
+    opacity: 1;
+}
+
+.tagline {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: -2px;
+    letter-spacing: 0.5px;
+}
+
+/* Center section with search */
+.header-center {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    margin: 0 2.5rem; /* Slightly increased margins */
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 420px; /* Slightly wider search box */
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    padding-right: 2.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid #333;
+    border-radius: 20px;
+    color: white;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.search-input:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #555;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.search-input::placeholder {
+    color: #666;
+}
+
+.search-button {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #777;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Right section with element count and action button */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-right: 15px; /* Add padding to move from edge */
+}
+
+.element-count {
+    font-size: 0.9rem;
+    color: #999;
+    padding: 0.25rem 0.5rem;
+    border-left: 2px solid #333;
+    padding-left: 1rem;
+}
+
+.action-button {
+    color: white;
+    font-size: 0.9rem;
+    padding: 0.5rem 1.2rem;
+    background: linear-gradient(90deg, #2E3192, #662D91);
+    border-radius: 20px; /* CHANGE THIS TO 6px */
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-right: 10px;
+}
+
+.action-button:hover {
+    background: linear-gradient(90deg, #3a3db5, #7e36af);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(102, 45, 145, 0.4);
+}
+
+.action-button {
+    color: white;
+    font-size: 0.9rem;
+    padding: 0.5rem 1.2rem;
+    background: linear-gradient(90deg, #2E3192, #662D91);
+    border-radius: 6px; /* Changed from 20px to 6px */
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-right: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Added subtle shadow */
+    font-weight: 500; /* Added slightly bolder text */
+    letter-spacing: 0.3px; /* Added slight letter spacing */
+}
+
+.action-button:hover {
+    background: linear-gradient(90deg, #3a3db5, #7e36af);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(102, 45, 145, 0.5); /* Enhanced shadow on hover */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Slightly brighter border on hover */
+}
+
+.action-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(102, 45, 145, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    header {
+        padding: 0.75rem 1.5rem;
+    }
+    
+    .header-center {
+        margin: 0 1rem;
+    }
+    
+    .header-right {
+        gap: 1rem;
+    }
+}
+.footer {
+            margin-top: auto;
+            padding: 1.5rem 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.8);
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #222;
+        }
+    </style>
+</head>
+<header>
+    <div class="header-left">
+        <div class="gradient-word">
+            <span>i</span><span>n</span><span>t</span><span>e</span><span>r</span><span>a</span><span>c</span><span>t</span><span>i</span><span>v</span><span>e</span>
+        </div>
+        <div class="tagline">Explore the elements</div>
+    </div>
+    <div class="header-center">
+        <div class="search-container">
+            <input type="text" placeholder="Search elements..." class="search-input">
+            <button class="search-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div class="header-right">
+        <div class="element-count">118 Elements</div>
+        <a href="draft_Sandbox.html" class="action-button">Sandbox Mode</a>
+    </div>
+</header>
+<body>
+    <div class="container">
+        <!-- Replace divs with hidden radio inputs -->
+        <input type="radio" name="filter" id="alkali-input" class="filter-input">
+        <input type="radio" name="filter" id="alkaline-input" class="filter-input">
+        <input type="radio" name="filter" id="transition-input" class="filter-input">
+        <input type="radio" name="filter" id="metalloids-input" class="filter-input">
+        <input type="radio" name="filter" id="nonmetals-input" class="filter-input">
+        <input type="radio" name="filter" id="halogens-input" class="filter-input">
+        <input type="radio" name="filter" id="noble-gases-input" class="filter-input">
+        <input type="radio" name="filter" id="lanthanides-input" class="filter-input">
+        <input type="radio" name="filter" id="actinides-input" class="filter-input">
+        <input type="radio" name="filter" id="show-all-input" class="filter-input" checked>
+        
+        <h1 class="table-title">Periodic Table of Elements</h1>
+        
+        <div class="menu">
+            <!-- Replace anchor links with labels that target the radio buttons -->
+            <label for="alkali-input" id="alkali-btn" class="menu-button">Alkali Metals</label>
+            <label for="alkaline-input" id="alkaline-btn" class="menu-button">Alkaline Earth</label>
+            <label for="transition-input" id="transition-btn" class="menu-button">Transition Metals</label>
+            <label for="metalloids-input" id="metalloid-btn" class="menu-button">Metalloids</label>
+            <label for="nonmetals-input" id="nonmetal-btn" class="menu-button">Nonmetals</label>
+            <label for="halogens-input" id="halogen-btn" class="menu-button">Halogens</label>
+            <label for="noble-gases-input" id="noble-btn" class="menu-button">Noble Gases</label>
+            <label for="lanthanides-input" id="lanthanide-btn" class="menu-button">Lanthanides</label>
+            <label for="actinides-input" id="actinide-btn" class="menu-button">Actinides</label>
+            <label for="show-all-input" id="reset-btn" class="menu-button">Show All</label>
+        </div>
+        
+        <div class="periodic-table">
+            <!-- Row 1 -->
+<a href="Hydrogen.html" style="text-decoration: none; color: inherit;">
+    <div class="element nonmetal" data-number="1" style="grid-column: 1;">H</div>
+</a>
+<div class="empty-space" style="grid-column: span 16;"></div>
+<a href="Helium.html" style="text-decoration: none; color: inherit;">
+    <div class="element noble" data-number="2" style="grid-column: 18;">He</div>
+</a>
+
+<!-- Row 2 -->
+<a href="Lithium.html" style="text-decoration: none; color: inherit;">
+    <div class="element alkali" data-number="3" style="grid-column: 1;">Li</div>
+</a>
+<a href="Beryllium.html" style="text-decoration: none; color: inherit;">
+    <div class="element alkaline" data-number="4">Be</div>
+</a>
+<div class="empty-space" style="grid-column: span 10;"></div>
+<a href="Boron.html" style="text-decoration: none; color: inherit;">
+    <div class="element metalloid" data-number="5" style="grid-column: 13;">B</div>
+</a>
+<a href="Carbon.html" style="text-decoration: none; color: inherit;">
+    <div class="element nonmetal" data-number="6">C</div>
+</a>
+<a href="Nitrogen.html" style="text-decoration: none; color: inherit;">
+    <div class="element nonmetal" data-number="7">N</div>
+</a>
+<a href="Oxygen.html" style="text-decoration: none; color: inherit;">
+    <div class="element nonmetal" data-number="8">O</div>
+</a>
+<a href="Fluorine.html" style="text-decoration: none; color: inherit;">
+    <div class="element halogen" data-number="9">F</div>
+</a>
+<a href="Neon.html" style="text-decoration: none; color: inherit;">
+    <div class="element noble" data-number="10">Ne</div>
+</a>
+
+<!-- Row 3 -->
+<a href="Sodium.html" style="text-decoration: none; color: inherit;">
+    <div class="element alkali" data-number="11" style="grid-column: 1;">Na</div>
+</a>
+<a href="Magnesium.html" style="text-decoration: none; color: inherit;">
+    <div class="element alkaline" data-number="12">Mg</div>
+</a>
+<div class="empty-space" style="grid-column: span 10;"></div>
+<a href="Aluminum.html" style="text-decoration: none; color: inherit;">
+    <div class="element transition" data-number="13" style="grid-column: 13;">Al</div>
+</a>
+<a href="Silicon.html" style="text-decoration: none; color: inherit;">
+    <div class="element metalloid" data-number="14">Si</div>
+</a>
+<a href="Phosphorus.html" style="text-decoration: none; color: inherit;">
+    <div class="element nonmetal" data-number="15">P</div>
+</a>
+<a href="Sulfur.html" style="text-decoration: none; color: inherit;">
+    <div class="element nonmetal" data-number="16">S</div>
+</a>
+<a href="Chlorine.html" style="text-decoration: none; color: inherit;">
+    <div class="element halogen" data-number="17">Cl</div>
+</a>
+<a href="Argon.html" style="text-decoration: none; color: inherit;">
+    <div class="element noble" data-number="18">Ar</div>
+</a>
+
+<!-- Row 4 -->
+<a href="Potassium.html" style="text-decoration: none; color: inherit;">
+    <div class="element alkali" data-number="19" style="grid-column: 1;">K</div>
+</a>
+<a href="Calcium.html" style="text-decoration: none; color: inherit;">
+    <div class="element alkaline" data-number="20">Ca</div>
+</a>
+<a href="Scandium.html" style="text-decoration: none; color: inherit;">
+    <div class="element transition" data-number="21">Sc</div>
+</a>
+<a href="Titanium.html" style="text-decoration: none; color: inherit;">
+    <div class="element transition" data-number="22">Ti</div>
+</a>
+<a href="Vanadium.html" style="text-decoration: none; color: inherit;">
+    <div class="element transition" data-number="23">V</div>
+</a>
+<a href="Chromium.html" style="text-decoration: none; color: inherit;">
+    <div class="element transition" data-number="24">Cr</div>
+</a>
+<a href="Manganese.html" style="text-decoration: none; color: inherit;">
+    <div class="element transition" data-number="25">Mn</div>
+</a>
+<a href="Iron.html" style="text-decoration: none; color: inherit;">
+    <div class="element transition" data-number="26">Fe</div>
+</a>
+<a href="Cobalt.html" style="text-decoration: none; color: inherit;">
+    <div class="element transition" data-number="27">Co</div>
+</a>
+<a href="Nickel.html" style="text-decoration: none; color: inherit;">
+    <div class="element transition" data-number="28">Ni</div>
+</a>
+<a href="Copper.html" style="text-decoration: none; color: inherit;">
+    <div class="element transition" data-number="29">Cu</div>
+</a>
+<a href="Zinc.html" style="text-decoration: none; color: inherit;">
+    <div class="element transition" data-number="30">Zn</div>
+</a>
+
+            <div class="element transition" data-number="31">Ga</div>
+            <div class="element metalloid" data-number="32">Ge</div>
+            <div class="element metalloid" data-number="33">As</div>
+            <div class="element nonmetal" data-number="34">Se</div>
+            <div class="element halogen" data-number="35">Br</div>
+            <div class="element noble" data-number="36">Kr</div>
+            
+            <!-- Row 5 -->
+            <div class="element alkali" data-number="37" style="grid-column: 1;">Rb</div>
+            <div class="element alkaline" data-number="38">Sr</div>
+            <div class="element transition" data-number="39">Y</div>
+            <div class="element transition" data-number="40">Zr</div>
+            <div class="element transition" data-number="41">Nb</div>
+            <div class="element transition" data-number="42">Mo</div>
+            <div class="element transition" data-number="43">Tc</div>
+            <div class="element transition" data-number="44">Ru</div>
+            <div class="element transition" data-number="45">Rh</div>
+            <div class="element transition" data-number="46">Pd</div>
+            <div class="element transition" data-number="47">Ag</div>
+            <div class="element transition" data-number="48">Cd</div>
+            <div class="element transition" data-number="49">In</div>
+            <div class="element transition" data-number="50">Sn</div>
+            <div class="element metalloid" data-number="51">Sb</div>
+            <div class="element metalloid" data-number="52">Te</div>
+            <div class="element halogen" data-number="53">I</div>
+            <div class="element noble" data-number="54">Xe</div>
+            
+            <!-- Row 6 -->
+            <div class="element alkali" data-number="55" style="grid-column: 1;">Cs</div>
+            <div class="element alkaline" data-number="56">Ba</div>
+            <a href="Lanthanum.html" style="text-decoration: none; color: inherit;">
+    <div class="element lanthanide" data-number="57">La</div>
+        </a>
+        <a href="Hafnium.html" style="text-decoration: none; color: inherit;">
+            <div class="element transition" data-number="72" style="grid-column: 4;">Hf</div>
+        </a>
+        <a href="Tantalum.html" style="text-decoration: none; color: inherit;">
+            <div class="element transition" data-number="73">Ta</div>
+        </a>
+        <a href="Tungsten.html" style="text-decoration: none; color: inherit;">
+            <div class="element transition" data-number="74">W</div>
+        </a>
+        <a href="Rhenium.html" style="text-decoration: none; color: inherit;">
+            <div class="element transition" data-number="75">Re</div>
+        </a>
+        <a href="Osmium.html" style="text-decoration: none; color: inherit;">
+            <div class="element transition" data-number="76">Os</div>
+        </a>
+        <a href="Iridium.html" style="text-decoration: none; color: inherit;">
+            <div class="element transition" data-number="77">Ir</div>
+        </a>
+        <a href="Platinum.html" style="text-decoration: none; color: inherit;">
+            <div class="element transition" data-number="78">Pt</div>
+        </a>
+        <a href="Gold.html" style="text-decoration: none; color: inherit;">
+            <div class="element transition" data-number="79">Au</div>
+        </a>
+        <a href="Mercury.html" style="text-decoration: none; color: inherit;">
+            <div class="element transition" data-number="80">Hg</div>
+        </a>
+        <a href="Thallium.html" style="text-decoration: none; color: inherit;">
+            <div class="element transition" data-number="81">Tl</div>
+        </a>
+        <a href="Lead.html" style="text-decoration: none; color: inherit;">
+            <div class="element transition" data-number="82">Pb</div>
+        </a>
+        <a href="Bismuth.html" style="text-decoration: none; color: inherit;">
+            <div class="element transition" data-number="83">Bi</div>
+        </a>
+        <a href="Polonium.html" style="text-decoration: none; color: inherit;">
+            <div class="element metalloid" data-number="84">Po</div>
+        </a>
+        <a href="Astatine.html" style="text-decoration: none; color: inherit;">
+            <div class="element halogen" data-number="85">At</div>
+        </a>
+        <a href="Radon.html" style="text-decoration: none; color: inherit;">
+            <div class="element noble" data-number="86">Rn</div>
+        </a>
+        <a href="Francium.html" style="text-decoration: none; color: inherit;">
+            <div class="element alkali" data-number="87" style="grid-column: 1;">Fr</div>
+        </a>
+        <a href="Radium.html" style="text-decoration: none; color: inherit;">
+            <div class="element alkaline" data-number="88">Ra</div>
+        </a>
+        <a href="Actinium.html" style="text-decoration: none; color: inherit;">
+            <div class="element actinide" data-number="89">Ac</div>
+        </a>
+            <div class="element transition" data-number="104" style="grid-column: 4;">Rf</div>
+            <div class="element transition" data-number="105">Db</div>
+            <div class="element transition" data-number="106">Sg</div>
+            <div class="element transition" data-number="107">Bh</div>
+            <div class="element transition" data-number="108">Hs</div>
+            <div class="element transition" data-number="109">Mt</div>
+            <div class="element transition" data-number="110">Ds</div>
+            <div class="element transition" data-number="111">Rg</div>
+            <div class="element transition" data-number="112">Cn</div>
+            <div class="element transition" data-number="113">Nh</div>
+            <div class="element transition" data-number="114">Fl</div>
+            <div class="element transition" data-number="115">Mc</div>
+            <div class="element transition" data-number="116">Lv</div>
+            <div class="element halogen" data-number="117">Ts</div>
+            <div class="element noble" data-number="118">Og</div>
+            
+            <!-- Separator for lanthanides and actinides -->
+            <div class="separator"></div>
+            
+            <!-- Lanthanides Row -->
+            <div class="empty-space" style="grid-column: span 3;"></div>
+            <div class="element lanthanide" data-number="58" style="grid-column: 4;">Ce</div>
+            <div class="element lanthanide" data-number="59">Pr</div>
+            <div class="element lanthanide" data-number="60">Nd</div>
+        <a href="Promethium.html" style="text-decoration: none; color: inherit;">
+            <div class="element lanthanide" data-number="61">Pm</div>
+        </a>
+
+
+            <div class="element lanthanide" data-number="62">Sm</div>
+            <div class="element lanthanide" data-number="63">Eu</div>
+            <div class="element lanthanide" data-number="64">Gd</div>
+            <div class="element lanthanide" data-number="65">Tb</div>
+            <div class="element lanthanide" data-number="66">Dy</div>
+            <div class="element lanthanide" data-number="67">Ho</div>
+            <div class="element lanthanide" data-number="68">Er</div>
+            <div class="element lanthanide" data-number="69">Tm</div>
+            <div class="element lanthanide" data-number="70">Yb</div>
+            <div class="element lanthanide" data-number="71">Lu</div>
+            
+            <!-- Actinides Row -->
+            <div class="empty-space" style="grid-column: span 3;"></div>
+            <div class="element actinide" data-number="90" style="grid-column: 4;">Th</div>
+            <div class="element actinide" data-number="91">Pa</div>
+            <div class="element actinide" data-number="92">U</div>
+            <div class="element actinide" data-number="93">Np</div>
+            <div class="element actinide" data-number="94">Pu</div>
+            <div class="element actinide" data-number="95">Am</div>
+            <div class="element actinide" data-number="96">Cm</div>
+            <div class="element actinide" data-number="97">Bk</div>
+            <div class="element actinide" data-number="98">Cf</div>
+            <div class="element actinide" data-number="99">Es</div>
+            <div class="element actinide" data-number="100">Fm</div>
+            <div class="element actinide" data-number="101">Md</div>
+            <div class="element actinide" data-number="102">No</div>
+            <div class="element actinide" data-number="103">Lr</div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color alkali"></div>
+                <span>Alkali Metals</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color alkaline"></div>
+                <span>Alkaline Earth</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color transition"></div>
+                <span>Transition Metals</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color metalloid"></div>
+                <span>Metalloids</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color nonmetal"></div>
+                <span>Nonmetals</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color halogen"></div>
+                <span>Halogens</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color noble"></div>
+                <span>Noble Gases</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color lanthanide"></div>
+                <span>Lanthanides</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color actinide"></div>
+                <span>Actinides</span>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>2025 Interactive Periodic Table Sandbox | Educational Chemistry Tool</p>
+    </footer>
+</body>
+</html>
+
+

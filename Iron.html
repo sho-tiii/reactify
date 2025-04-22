@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promethium - Periodic Table</title>
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --accent-color: #8338ec;
+            --text-color: #f8f9fa;
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --border-color: #333;
+            --hover-color: rgba(255, 255, 255, 0.05);
+            --transition: all 0.3s ease;
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(58, 134, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(131, 56, 236, 0.05) 0%, transparent 50%);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.5;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Main Content Styles */
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0.75rem auto;
+            padding: 0 1.5rem;
+            overflow-y: auto;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+        }
+        
+        .breadcrumb a {
+            color: #aaa;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .breadcrumb a:hover {
+            color: var(--primary-color);
+        }
+        
+        .breadcrumb span {
+            color: #888;
+        }
+        
+        .breadcrumb .current {
+            color: var(--primary-color);
+        }
+        
+        .element-info {
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 1rem;
+        }
+        
+        .element-content {
+            padding: 1.5rem;
+        }
+        
+        .element-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .element-symbol-container {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            margin-right: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(46, 134, 193, 0.3);
+        }
+        
+        .element-symbol-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2e86c1, #3498db);
+            z-index: 1;
+        }
+        
+        .element-symbol-content {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+        
+        .element-symbol {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .element-number {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .element-name {
+            color: var(--text-color);
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .element-category {
+            display: inline-block;
+            background-color: rgba(46, 134, 193, 0.2);
+            color: #3498db;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-top: 0.2rem;
+        }
+        
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
+        
+        .property {
+            padding: 0.5rem;
+            border-radius: 6px;
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        
+        .property-label {
+            color: #888;
+            font-size: 0.75rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .property-value {
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 1rem 0 0.5rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .info-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .info-section {
+            min-width: 0;
+        }
+        
+        .feature-list {
+            list-style: none;
+        }
+        
+        .feature-item {
+            margin-bottom: 0.5rem;
+            padding: 0.3rem;
+            border-radius: 4px;
+            display: flex;
+            align-items: flex-start;
+            font-size: 0.9rem;
+        }
+        
+        .feature-icon {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+        
+        .model-container {
+            background-color: rgba(0, 0, 0, 0.2);
+            position: relative;
+            border-left: 1px solid var(--border-color);
+        }
+        
+        .model-header {
+            padding: 0.75rem 1rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .model-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #ccc;
+        }
+        
+        .model-controls {
+            display: flex;
+            gap: 0.4rem;
+        }
+        
+        .model-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .model-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .model-embed {
+            width: 100%;
+            height: calc(100% - 43px);
+            border: none;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(58, 134, 255, 0.3);
+        }
+        
+        .back-btn:hover {
+            background-color: #2a75e6;
+            transform: translateY(-2px);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 0.75rem 1rem;
+            }
+            
+            .header-left, .header-center, .header-right {
+                margin-bottom: 0.5rem;
+            }
+            
+            .element-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .model-container {
+                border-left: none;
+                border-top: 1px solid var(--border-color);
+                height: 300px;
+            }
+            
+            .info-sections {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.8rem;
+            }
+            
+            .logo-container {
+                align-items: center;
+            }
+            
+            .properties-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .nav-links {
+                gap: 0.8rem;
+            }
+        }
+        header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 3rem; /* Increased horizontal padding */
+    background: linear-gradient(90deg, #0a0a0a, #111111, #0a0a0a);
+    border-bottom: 1px solid #333;
+    width: 100%;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+/* Left section with logo and tagline */
+.header-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 30px; /* Significantly increased padding to move from edge */
+    min-width: 150px; /* Ensure minimum width */
+}
+
+.gradient-word {
+    display: inline-block;
+    position: relative;
+    white-space: nowrap;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 10px; /* Add margin to move text from edge */
+}
+
+.tagline {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: -2px;
+    letter-spacing: 0.5px;
+    margin-left: 10px; /* Match margin with gradient-word */
+}
+
+/* Right section with element count and action button */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-right: 30px; /* Significantly increased padding to move from edge */
+    min-width: 150px; /* Ensure minimum width */
+}
+
+/* Center section with search */
+.header-center {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    margin: 0 2.5rem; /* Slightly increased margins */
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+    max-width: 420px; /* Slightly wider search box */
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    padding-right: 2.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid #333;
+    border-radius: 20px;
+    color: white;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.search-input:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #555;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.search-input::placeholder {
+    color: #666;
+}
+
+.search-button {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #777;
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.element-count {
+    font-size: 0.9rem;
+    color: #999;
+    padding: 0.25rem 0.5rem;
+    border-left: 2px solid #333;
+    padding-left: 1rem;
+}
+
+.action-button {
+    color: white;
+    font-size: 0.9rem;
+    padding: 0.5rem 1.2rem;
+    background: linear-gradient(90deg, #2E3192, #662D91);
+    border-radius: 6px; /* Changed from 20px to 6px */
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-right: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Added subtle shadow */
+    font-weight: 500; /* Added slightly bolder text */
+    letter-spacing: 0.3px; /* Added slight letter spacing */
+}
+
+.action-button:hover {
+    background: linear-gradient(90deg, #3a3db5, #7e36af);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(102, 45, 145, 0.5); /* Enhanced shadow on hover */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Slightly brighter border on hover */
+}
+
+.action-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(102, 45, 145, 0.4);
+}
+
+.gradient-word span:nth-child(1) { color: #8CC63F; }
+.gradient-word span:nth-child(2) { color: #39B54A; }
+.gradient-word span:nth-child(3) { color: #00AEEF; }
+.gradient-word span:nth-child(4) { color: #0072BC; }
+.gradient-word span:nth-child(5) { color: #2E3192; }
+.gradient-word span:nth-child(6) { color: #662D91; }
+.gradient-word span:nth-child(7) { color: #92278F; }
+.gradient-word span:nth-child(8) { color: #EC008C; }
+.gradient-word span:nth-child(9) { color: #ED145B; }
+.gradient-word span:nth-child(10) { color: #ED1C24; }
+.gradient-word span:nth-child(11) { color: #F7931E; }
+
+.gradient-word:hover span {
+    opacity: 0;
+}
+
+.gradient-word::after {
+    content: "reactify";
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: linear-gradient(to right, #8CC63F, #39B54A, #00AEEF, #0072BC, #2E3192, #662D91, #92278F, #EC008C, #ED145B, #ED1C24, #F7931E);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+.gradient-word:hover::after {
+    opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    header {
+        padding: 0.75rem 1.5rem;
+    }
+    
+    .header-center {
+        margin: 0 1rem;
+    }
+    
+    .header-right {
+        gap: 1rem;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <header>
+    <div class="header-left">
+        <div class="gradient-word">
+            <span>i</span><span>n</span><span>t</span><span>e</span><span>r</span><span>a</span><span>c</span><span>t</span><span>i</span><span>v</span><span>e</span>
+        </div>
+        <div class="tagline">Explore the elements</div>
+    </div>
+    <div class="header-center">
+        <div class="search-container">
+            <input type="text" placeholder="Search elements..." class="search-input">
+            <button class="search-button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div class="header-right">
+        <div class="element-count">118 Elements</div>
+        <a href="#" class="action-button">Sandbox Mode</a>
+    </div>
+</header>
+    <div class="container">
+    <div class="breadcrumb">
+        <a href="#">Home</a>
+        <span>/</span>
+        <a href="draft_TwoMain.html">Periodic Table</a>
+        <span>/</span>
+        <span class="current">Iron</span>
+    </div>
+
+    <div class="element-info">
+        <div class="element-content">
+            <div class="element-header">
+                <div class="element-symbol-container">
+                    <div class="element-symbol-bg"></div>
+                    <div class="element-symbol-content">
+                        <span class="element-number">26</span>
+                        <span class="element-symbol">Fe</span> <!-- Correct element symbol "Fe" -->
+                    </div>
+                </div>
+                <div>
+                    <h1 class="element-name">Iron</h1>
+                    <span class="element-category">Transition Metal</span>
+                </div>
+            </div>
+
+            <div class="properties-grid">
+                <div class="property">
+                    <div class="property-label">Atomic Mass</div>
+                    <div class="property-value">55.845 u</div>
+                </div>
+                <div class="property">
+                    <div class="property-label">Density</div>
+                    <div class="property-value">7.874 g/cm³ (liquid at melting point)</div>
+                </div>
+                <div class="property">
+                    <div class="property-label">Melting Point</div>
+                    <div class="property-value">1538 °C</div>
+                </div>
+                <div class="property">
+                    <div class="property-label">Boiling Point</div>
+                    <div class="property-value">2862 °C</div>
+                </div>
+                <div class="property">
+                    <div class="property-label">State</div>
+                    <div class="property-value">Solid</div>
+                </div>
+                <div class="property">
+                    <div class="property-label">Discovery</div>
+                    <div class="property-value">Prehistoric</div>
+                </div>
+            </div>
+
+            <h2 class="section-title">Discovery</h2>
+            <p>Iron has been known since ancient times and was widely used in early civilizations.</p>
+
+            <div class="info-sections">
+                <div class="info-section">
+                    <h2 class="section-title">Common Uses</h2>
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <i class="fas fa-building feature-icon"></i>
+                            <span>Used extensively in construction and infrastructure</span>
+                        </li>
+                        <li class="feature-item">
+                            <i class="fas fa-industry feature-icon"></i>
+                            <span>Essential in the production of steel</span>
+                        </li>
+                        <li class="feature-item">
+                            <i class="fas fa-tools feature-icon"></i>
+                            <span>Applied in machinery, tools, and vehicles</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="info-section">
+                    <h2 class="section-title">Interesting Facts</h2>
+                    <ul class="feature-list">
+                        <li class="feature-item">
+                            <i class="fas fa-globe feature-icon"></i>
+                            <span>Iron is the most widely used metal in the world.</span>
+                        </li>
+                        <li class="feature-item">
+                            <i class="fas fa-mountain feature-icon"></i>
+                            <span>It makes up a significant portion of Earth’s core.</span>
+                        </li>
+                        <li class="feature-item">
+                            <i class="fas fa-heartbeat feature-icon"></i>
+                            <span>Hemoglobin, which carries oxygen in blood, contains iron.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <a href="draft_TwoMain.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Periodic Table
+            </a>
+        </div>
+
+        <div class="model-container">
+            <div class="model-header">
+                <div class="model-title">2D Model Visualization</div>
+                <div class="model-controls">
+                    <button class="model-btn" title="Rotate"><i class="fas fa-sync"></i></button>
+                    <button class="model-btn" title="Zoom"><i class="fas fa-search-plus"></i></button>
+                    <button class="model-btn" title="Reset view"><i class="fas fa-compress-arrows-alt"></i></button>
+                </div>
+            </div>
+            <!-- Small letter "fe" for the iframe title and src -->
+            <iframe src="fe.html" class="model-embed" title="Iron Model"></iframe>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

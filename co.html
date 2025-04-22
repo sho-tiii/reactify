@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #000000;
+      font-family: Arial, sans-serif;
+    }
+    
+    .atom-container {
+      position: relative;
+      width: 150px;
+      height: 150px;
+    }
+
+    /* Rotation Wrapper */
+    .rotation {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: spin 5s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+    
+    .nucleus {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 30px;
+      height: 30px;
+      background-color: #ff0000;
+      border-radius: 50%;
+      box-shadow: 0 0 7px rgba(255, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+      font-size: 12px;
+      z-index: 10;
+    }
+    
+    .shell {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      border: 1px solid #ffffff;
+      transform: translate(-50%, -50%);
+    }
+    
+    .shell-1 { width: 60px; height: 60px; }
+    .shell-2 { width: 100px; height: 100px; }
+    .shell-3 { width: 140px; height: 140px; }
+    .shell-4 { width: 180px; height: 180px; }
+    
+    .electron {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background-color: #0000ff;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 6px rgba(0, 0, 255, 0.7);
+    }
+    
+    .element-info {
+      position: absolute;
+      bottom: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="atom-container">
+    <div class="rotation">
+      <div class="nucleus">Co<br>27</div>
+      
+      <!-- Shells -->
+      <div class="shell shell-1"></div>
+      <div class="shell shell-2"></div>
+      <div class="shell shell-3"></div>
+      <div class="shell shell-4"></div>
+      
+      <!-- Shell 1 (K) - 2 electrons -->
+      <div class="electron" style="top: 50%; left: calc(50% - 30px);"></div>
+      <div class="electron" style="top: 50%; left: calc(50% + 30px);"></div>
+      
+      <!-- Shell 2 (L) - 8 electrons -->
+      <div class="electron" style="top: calc(50% - 50px); left: 50%;"></div>
+      <div class="electron" style="top: calc(50% + 50px); left: 50%;"></div>
+      <div class="electron" style="top: 50%; left: calc(50% - 50px);"></div>
+      <div class="electron" style="top: 50%; left: calc(50% + 50px);"></div>
+      <div class="electron" style="top: calc(50% - 35.4px); left: calc(50% - 35.4px);"></div>
+      <div class="electron" style="top: calc(50% - 35.4px); left: calc(50% + 35.4px);"></div>
+      <div class="electron" style="top: calc(50% + 35.4px); left: calc(50% - 35.4px);"></div>
+      <div class="electron" style="top: calc(50% + 35.4px); left: calc(50% + 35.4px);"></div>
+      
+      <!-- Shell 3 (M) - 15 electrons -->
+      <div class="electron" style="top: calc(50% - 70px); left: 50%;"></div>
+      <div class="electron" style="top: calc(50% + 70px); left: 50%;"></div>
+      <div class="electron" style="top: calc(50% - 70px); left: calc(50% - 70px);"></div>
+      <div class="electron" style="top: calc(50% + 70px); left: calc(50% - 70px);"></div>
+      <div class="electron" style="top: calc(50% - 70px); left: calc(50% + 70px);"></div>
+      <div class="electron" style="top: calc(50% + 70px); left: calc(50% + 70px);"></div>
+      <div class="electron" style="top: calc(50% - 50px); left: calc(50% - 50px);"></div>
+      <div class="electron" style="top: calc(50% + 50px); left: calc(50% - 50px);"></div>
+      <div class="electron" style="top: calc(50% - 50px); left: calc(50% + 50px);"></div>
+      <div class="electron" style="top: calc(50% + 50px); left: calc(50% + 50px);"></div>
+      <div class="electron" style="top: calc(50% - 35.4px); left: calc(50% - 35.4px);"></div>
+      <div class="electron" style="top: calc(50% - 35.4px); left: calc(50% + 35.4px);"></div>
+      <div class="electron" style="top: calc(50% + 35.4px); left: calc(50% - 35.4px);"></div>
+      <div class="electron" style="top: calc(50% + 35.4px); left: calc(50% + 35.4px);"></div>
+      
+      <!-- Shell 4 (N) - 2 electrons -->
+      <div class="electron" style="top: calc(50% - 90px); left: 50%;"></div>
+      <div class="electron" style="top: calc(50% + 90px); left: 50%;"></div>
+    </div>
+  </div>
+</body>
+</html>
