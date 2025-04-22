@@ -37,22 +37,28 @@
         .gradient-word span:nth-child(10) { color: #ED1C24; }
         .gradient-word span:nth-child(11) { color: #F7931E; }
 
-        .gradient-word {
+        .word-container {
             display: inline-block;
             position: relative;
-            white-space: nowrap;
+            cursor: pointer;
         }
-        .gradient-word span {
+        
+        .gradient-word {
+            display: inline-block;
+            white-space: nowrap;
             transition: opacity 0.3s ease;
         }
-        .gradient-word:hover span {
+        
+        .word-container:hover .gradient-word {
             opacity: 0;
         }
-        .gradient-word::after {
-            content: "reactify";
+        
+        .reactify-word {
             position: absolute;
-            left: 0;
             top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
             background: linear-gradient(to right, #8CC63F, #39B54A, #00AEEF, #0072BC, #2E3192, #662D91, #92278F, #EC008C, #ED145B, #ED1C24, #F7931E);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -60,8 +66,31 @@
             transition: opacity 0.3s ease;
             opacity: 0;
         }
-        .gradient-word:hover::after {
+        
+        .word-container:hover .reactify-word {
             opacity: 1;
+        }
+        
+        /* Subtle moving glow effect */
+        .glow-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            border-radius: 10px;
+            box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.2);
+            opacity: 0.6;
+            animation: glow-move 3s infinite;
+        }
+        
+        @keyframes glow-move {
+            0% { box-shadow: 0 0 15px 2px rgba(255, 255, 255, 0.1); }
+            25% { box-shadow: 0 0 12px 4px rgba(124, 218, 255, 0.2); }
+            50% { box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.3); }
+            75% { box-shadow: 0 0 12px 4px rgba(255, 220, 124, 0.2); }
+            100% { box-shadow: 0 0 15px 2px rgba(255, 255, 255, 0.1); }
         }
     </style>
 </head>
@@ -69,8 +98,12 @@
     <div class="text-center px-4">
         <h1 class="text-6xl md:text-7xl font-bold text-white">
             The 
-            <a href="draft_TwoLinear.html" class="gradient-word">
-                <span>i</span><span>n</span><span>t</span><span>e</span><span>r</span><span>a</span><span>c</span><span>t</span><span>i</span><span>v</span><span>e</span>
+            <a href="draft_TwoLinear.html" class="word-container relative">
+                <span class="gradient-word">
+                    <span>i</span><span>n</span><span>t</span><span>e</span><span>r</span><span>a</span><span>c</span><span>t</span><span>i</span><span>v</span><span>e</span>
+                </span>
+                <span class="reactify-word">reactify</span>
+                <div class="glow-effect"></div>
             </a>
             <br>
             periodic elements explorer
