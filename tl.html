@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thallium Atom Model</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #000;
+      font-family: Arial, sans-serif;
+    }
+
+    .atom-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+    }
+
+    .rotation {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: spin 15s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .nucleus {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 30px;
+      height: 30px;
+      background-color: #ff0000;
+      border-radius: 50%;
+      box-shadow: 0 0 7px rgba(255, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+      font-size: 12px;
+      z-index: 10;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .shell {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      border: 1px solid #fff;
+      transform: translate(-50%, -50%);
+    }
+
+    .shell-1 { width: 60px; height: 60px; }
+    .shell-2 { width: 100px; height: 100px; }
+    .shell-3 { width: 140px; height: 140px; }
+    .shell-4 { width: 180px; height: 180px; }
+    .shell-5 { width: 220px; height: 220px; }
+    .shell-6 { width: 260px; height: 260px; }
+
+    .electron {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background-color: #00f;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 6px rgba(0, 0, 255, 0.7);
+    }
+  </style>
+</head>
+<body>
+  <div class="atom-container">
+    <div class="rotation">
+      <div class="nucleus">Tl<br>81</div>
+
+      <!-- Shells -->
+      <div class="shell shell-1"></div>
+      <div class="shell shell-2"></div>
+      <div class="shell shell-3"></div>
+      <div class="shell shell-4"></div>
+      <div class="shell shell-5"></div>
+      <div class="shell shell-6"></div>
+
+      <!-- Electrons -->
+      <!-- Shell 1 (K): 2 electrons -->
+      <div class="electron" style="top: 50%; left: calc(50% - 30px);"></div>
+      <div class="electron" style="top: 50%; left: calc(50% + 30px);"></div>
+
+      <!-- Shell 2 (L): 8 electrons -->
+      <div class="electron" style="top: calc(50% - 50px); left: 50%;"></div>
+      <div class="electron" style="top: calc(50% + 50px); left: 50%;"></div>
+      <div class="electron" style="top: 50%; left: calc(50% - 50px);"></div>
+      <div class="electron" style="top: 50%; left: calc(50% + 50px);"></div>
+      <div class="electron" style="top: calc(50% - 35px); left: calc(50% - 35px);"></div>
+      <div class="electron" style="top: calc(50% - 35px); left: calc(50% + 35px);"></div>
+      <div class="electron" style="top: calc(50% + 35px); left: calc(50% - 35px);"></div>
+      <div class="electron" style="top: calc(50% + 35px); left: calc(50% + 35px);"></div>
+
+      <!-- Shell 3 (M): 18 electrons -->
+      <div class="electron" style="top: calc(50% - 70px); left: 50%;"></div>
+      <div class="electron" style="top: calc(50% + 70px); left: 50%;"></div>
+      <div class="electron" style="top: 50%; left: calc(50% - 70px);"></div>
+      <div class="electron" style="top: 50%; left: calc(50% + 70px);"></div>
+      <div class="electron" style="top: calc(50% - 49px); left: calc(50% - 49px);"></div>
+      <div class="electron" style="top: calc(50% - 49px); left: calc(50% + 49px);"></div>
+      <div class="electron" style="top: calc(50% + 49px); left: calc(50% - 49px);"></div>
+      <div class="electron" style="top: calc(50% + 49px); left: calc(50% + 49px);"></div>
+      <div class="electron" style="top: calc(50% - 24px); left: calc(50% - 66px);"></div>
+      <div class="electron" style="top: calc(50% - 24px); left: calc(50% + 66px);"></div>
+      <div class="electron" style="top: calc(50% + 24px); left: calc(50% - 66px);"></div>
+      <div class="electron" style="top: calc(50% + 24px); left: calc(50% + 66px);"></div>
+      <div class="electron" style="top: calc(50% - 66px); left: calc(50% - 24px);"></div>
+      <div class="electron" style="top: calc(50% - 66px); left: calc(50% + 24px);"></div>
+      <div class="electron" style="top: calc(50% + 66px); left: calc(50% - 24px);"></div>
+      <div class="electron" style="top: calc(50% + 66px); left: calc(50% + 24px);"></div>
+      <div class="electron" style="top: calc(50% - 38px); left: calc(50%);"></div>
+      <div class="electron" style="top: calc(50% + 38px); left: calc(50%);"></div>
+
+      <!-- Shell 4 (N): 32 electrons -->
+      <div class="electron" style="top: calc(50% - 90px); left: 50%;"></div>
+      <div class="electron" style="top: calc(50% + 90px); left: 50%;"></div>
+      <div class="electron" style="top: 50%; left: calc(50% - 90px);"></div>
+      <div class="electron" style="top: 50%; left: calc(50% + 90px);"></div>
+      <div class="electron" style="top: calc(50% - 63px); left: calc(50% - 63px);"></div>
+      <div class="electron" style="top: calc(50% - 63px); left: calc(50% + 63px);"></div>
+      <div class="electron" style="top: calc(50% + 63px); left: calc(50% - 63px);"></div>
+      <div class="electron" style="top: calc(50% + 63px); left: calc(50% + 63px);"></div>
+
+      <div class="electron" style="top: calc(50% - 45px); left: calc(50% - 78px);"></div>
+      <div class="electron" style="top: calc(50% - 45px); left: calc(50% + 78px);"></div>
+      <div class="electron" style="top: calc(50% + 45px); left: calc(50% - 78px);"></div>
+      <div class="electron" style="top: calc(50% + 45px); left: calc(50% + 78px);"></div>
+      <div class="electron" style="top: calc(50% - 78px); left: calc(50% - 45px);"></div>
+      <div class="electron" style="top: calc(50% - 78px); left: calc(50% + 45px);"></div>
+      <div class="electron" style="top: calc(50% + 78px); left: calc(50% - 45px);"></div>
+      <div class="electron" style="top: calc(50% + 78px); left: calc(50% + 45px);"></div>
+
+      <div class="electron" style="top: calc(50% - 23px); left: calc(50% - 87px);"></div>
+      <div class="electron" style="top: calc(50% - 23px); left: calc(50% + 87px);"></div>
+      <div class="electron" style="top: calc(50% + 23px); left: calc(50% - 87px);"></div>
+      <div class="electron" style="top: calc(50% + 23px); left: calc(50% + 87px);"></div>
+      <div class="electron" style="top: calc(50% - 87px); left: calc(50% - 23px);"></div>
+      <div class="electron" style="top: calc(50% - 87px); left: calc(50% + 23px);"></div>
+      <div class="electron" style="top: calc(50% + 87px); left: calc(50% - 23px);"></div>
+      <div class="electron" style="top: calc(50% + 87px); left: calc(50% + 23px);"></div>
+
+      <div class="electron" style="top: calc(50% - 90px); left: calc(50% - 12px);"></div>
+      <div class="electron" style="top: calc(50% - 90px); left: calc(50% + 12px);"></div>
+      <div class="electron" style="top: calc(50% + 90px); left: calc(50% - 12px);"></div>
+      <div class="electron" style="top: calc(50% + 90px); left: calc(50% + 12px);"></div>
+      <div class="electron" style="top: calc(50% - 12px); left: calc(50% - 90px);"></div>
+      <div class="electron" style="top: calc(50% + 12px); left: calc(50% - 90px);"></div>
+      <div class="electron" style="top: calc(50% - 12px); left: calc(50% + 90px);"></div>
+      <div class="electron" style="top: calc(50% + 12px); left: calc(50% + 90px);"></div>
+
+      <!-- Shell 5 (O): 18 electrons -->
+      <div class="electron" style="top: calc(50% - 110px); left: 50%;"></div>
+      <div class="electron" style="top: calc(50% + 110px); left: 50%;"></div>
+      <div class="electron" style="top: 50%; left: calc(50% - 110px);"></div>
+      <div class="electron" style="top: 50%; left: calc(50% + 110px);"></div>
+      <div class="electron" style="top: calc(50% - 77px); left: calc(50% - 77px);"></div>
+      <div class="electron" style="top: calc(50% - 77px); left: calc(50% + 77px);"></div>
+      <div class="electron" style="top: calc(50% + 77px); left: calc(50% - 77px);"></div>
+      <div class="electron" style="top: calc(50% + 77px); left: calc(50% + 77px);"></div>
+      <div class="electron" style="top: calc(50% - 30px); left: calc(50% - 106px);"></div>
+      <div class="electron" style="top: calc(50% - 30px); left: calc(50% + 106px);"></div>
+      <div class="electron" style="top: calc(50% + 30px); left: calc(50% - 106px);"></div>
+      <div class="electron" style="top: calc(50% + 30px); left: calc(50% + 106px);"></div>
+      <div class="electron" style="top: calc(50% - 106px); left: calc(50% - 30px);"></div>
+      <div class="electron" style="top: calc(50% - 106px); left: calc(50% + 30px);"></div>
+      <div class="electron" style="top: calc(50% + 106px); left: calc(50% - 30px);"></div>
+      <div class="electron" style="top: calc(50% + 106px); left: calc(50% + 30px);"></div>
+      <div class="electron" style="top: calc(50% - 55px); left: calc(50%);"></div>
+      <div class="electron" style="top: calc(50% + 55px); left: calc(50%);"></div>
+
+      <!-- Shell 6 (P): 3 electrons -->
+      <div class="electron" style="top: 50%; left: calc(50% - 130px);"></div>
+      <div class="electron" style="top: calc(50% - 65px); left: calc(50% - 112px);"></div>
+      <div class="electron" style="top: calc(50% + 65px); left: calc(50% - 112px);"></div>
+
+    </div>
+  </div>
+</body>
+</html>
