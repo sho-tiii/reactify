@@ -236,6 +236,7 @@
             max-width: 1200px;
             margin: 2rem auto;
             color: white;
+            flex: 1;
         }
 
         .sandbox-title {
@@ -558,15 +559,66 @@
         .lanthanide { color: #2980B9; }
         .actinide { color: #27AE60; }
 
+        /* Fixed Footer Styling */
         .footer {
-            margin-top: auto;
-            padding: 1.5rem 0;
             width: 100%;
-            background: rgba(10, 10, 10, 0.8);
+            padding: 1.5rem 0;
+            background: rgba(10, 10, 10, 0.9);
             text-align: center;
             color: #666;
             font-size: 0.9rem;
             border-top: 1px solid #222;
+            margin-top: auto;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .footer p {
+            margin: 0;
+            padding: 0 20px;
+        }
+
+        /* Info cards styling */
+        .element-info-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            background: rgba(25, 25, 25, 0.7);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #333;
+        }
+
+        .info-card-title {
+            color: #ccc;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .info-card-text {
+            color: #aaa;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .info-card-list {
+            color: #aaa;
+            padding-left: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .bond-type {
+            color: #4682B4;
+            font-weight: 500;
         }
 
         /* Animations for the sandbox */
@@ -769,21 +821,13 @@
             
             <div class="reaction-controls">
                 <button class="control-button mix-button">
-                    
-                        <path d="M13 5L21 12M21 12L13 19M21 12H3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
                     Mix Elements
                 </button>
                 <button class="control-button reset-button">
-                    
-                        <path d="M4 4V9H9M20 20V15H15M20 9L15.5 15.5M4 15L8.5 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
                     Reset
                 </button>
             </div>
         </div>
-        
-        
         
         <!-- Info Cards Section -->
         <div class="element-info-cards">
@@ -810,9 +854,11 @@
                 </ul>
             </div>
         </div>
-            <footer class="footer">
-                <p>2025 Interactive Periodic Table Sandbox | Educational Chemistry Tool</p>
-            </footer>
+    </div>
+    
+    <footer class="footer">
+        <p>2025 Interactive Periodic Table Sandbox | Educational Chemistry Tool</p>
+    </footer>
 
     <script>
         // Element data with properties
