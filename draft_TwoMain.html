@@ -675,6 +675,18 @@ header {
             font-size: 0.9rem;
             border-top: 1px solid #222;
         }
+        .legend-item {
+    display: flex;
+    align-items: center;
+    margin: 3px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.legend-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
     </style>
 </head>
 <header>
@@ -831,92 +843,92 @@ header {
             <div class="element transition" data-number="30">Zn</div>
         </a>
 
-        <a href="Gallium.html" style="text-decoration: none; color: inherit;">
             <div class="element transition" data-number="31">Ga</div>
-        </a>
-        <a href="Germanium.html" style="text-decoration: none; color: inherit;">
             <div class="element metalloid" data-number="32">Ge</div>
-        </a>
-        <a href="Arsenic.html" style="text-decoration: none; color: inherit;">
             <div class="element metalloid" data-number="33">As</div>
-        </a>
-        <a href="Selenium.html" style="text-decoration: none; color: inherit;">
             <div class="element nonmetal" data-number="34">Se</div>
-        </a>
-        <a href="Bromine.html" style="text-decoration: none; color: inherit;">
             <div class="element halogen" data-number="35">Br</div>
-        </a>
-        <a href="Krypton.html" style="text-decoration: none; color: inherit;">
             <div class="element noble" data-number="36">Kr</div>
-        </a>
-        
             
             <!-- Row 5 -->
-        <a href="Rubidium.html" style="text-decoration: none; color: inherit;">
-            <div class="element alkali" data-number="37" style="grid-column: 1;">Rb</div>
-        </a>
-        <a href="Strontium.html" style="text-decoration: none; color: inherit;">
-            <div class="element alkaline" data-number="38">Sr</div>
-        </a>
-        <a href="Yttrium.html" style="text-decoration: none; color: inherit;">
-            <div class="element transition" data-number="39">Y</div>
-        </a>
-        <a href="Zirconium.html" style="text-decoration: none; color: inherit;">
+            <a href="Rubidium.html" style="text-decoration: none; color: inherit;">
+                <div class="element alkali" data-number="37" style="grid-column: 1;">Rb</div>
+            </a>
+            
+            <a href="Strontium.html" style="text-decoration: none; color: inherit;">
+                <div class="element alkaline" data-number="38">Sr</div>
+            </a>
+            
+            <a href="Yttrium.html" style="text-decoration: none; color: inherit;">
+                <div class="element transition" data-number="39">Y</div>
+            </a>
+            
+            <a href="Zirconium.html" style="text-decoration: none; color: inherit;">
                 <div class="element transition" data-number="40">Zr</div>
             </a>
-        <a href="Niobium.html" style="text-decoration: none; color: inherit;">
+            
+            <a href="Niobium.html" style="text-decoration: none; color: inherit;">
                 <div class="element transition" data-number="41">Nb</div>
-        </a>
-        <a href="Molybdenum.html" style="text-decoration: none; color: inherit;">
-            <div class="element transition" data-number="42">Mo</div>
-        </a>
-        <a href="Technetium.html" style="text-decoration: none; color: inherit;">
+            </a>
+            
+            <a href="Molybdenum.html" style="text-decoration: none; color: inherit;">
+                <div class="element transition" data-number="42">Mo</div>
+            </a>
+            
+            <a href="Technetium.html" style="text-decoration: none; color: inherit;">
                 <div class="element transition" data-number="43">Tc</div>
-        </a>
-        <a href="Ruthenium.html" style="text-decoration: none; color: inherit;">
-            <div class="element transition" data-number="44">Ru</div>
-        </a>
-        <a href="Rhodium.html" style="text-decoration: none; color: inherit;">
-            <div class="element transition" data-number="45">Rh</div>
-        </a>
-        <a href="Palladium.html" style="text-decoration: none; color: inherit;">
-            <div class="element transition" data-number="46">Pd</div>
-        </a>
-        <a href="Silver.html" style="text-decoration: none; color: inherit;">
-            <div class="element transition" data-number="47">Ag</div>
-        </a>
-        <a href="Cadmium.html" style="text-decoration: none; color: inherit;">
-            <div class="element transition" data-number="48">Cd</div>
-        </a>
-        <a href="Indium.html" style="text-decoration: none; color: inherit;">
-            <div class="element transition" data-number="49">In</div>
-        </a>
-        <a href="Tin.html" style="text-decoration: none; color: inherit;">
-            <div class="element transition" data-number="50">Sn</div>
-        </a>  
-        <a href="Antimony.html" style="text-decoration: none; color: inherit;">
-            <div class="element metalloid" data-number="51">Sb</div>
-        </a> 
-        <a href="Tellurium.html" style="text-decoration: none; color: inherit;">
-            <div class="element metalloid" data-number="52">Te</div>
-        </a>
-        <a href="Iodine.html" style="text-decoration: none; color: inherit;">
-            <div class="element halogen" data-number="53">I</div>
-        </a>
-        <a href="Xenon.html" style="text-decoration: none; color: inherit;">
-            <div class="element noble" data-number="54">Xe</div>
-        </a>
+            </a>
+            
+            <a href="Ruthenium.html" style="text-decoration: none; color: inherit;">
+                <div class="element transition" data-number="44">Ru</div>
+            </a>
+            
+            <a href="Rhodium.html" style="text-decoration: none; color: inherit;">
+                <div class="element transition" data-number="45">Rh</div>
+            </a>
+            
+            <a href="Palladium.html" style="text-decoration: none; color: inherit;">
+                <div class="element transition" data-number="46">Pd</div>
+            </a>
+            
+            <a href="Silver.html" style="text-decoration: none; color: inherit;">
+                <div class="element transition" data-number="47">Ag</div>
+            </a>
+            
+            <a href="Cadmium.html" style="text-decoration: none; color: inherit;">
+                <div class="element transition" data-number="48">Cd</div>
+            </a>
+            
+            <a href="Indium.html" style="text-decoration: none; color: inherit;">
+                <div class="element transition" data-number="49">In</div>
+            </a>
+            
+            <a href="Tin.html" style="text-decoration: none; color: inherit;">
+                <div class="element transition" data-number="50">Sn</div>
+            </a>
+            
+            <a href="Antimony.html" style="text-decoration: none; color: inherit;">
+                <div class="element metalloid" data-number="51">Sb</div>
+            </a>
+            
+            <a href="Tellurium.html" style="text-decoration: none; color: inherit;">
+                <div class="element metalloid" data-number="52">Te</div>
+            </a>
+            
+            <a href="Iodine.html" style="text-decoration: none; color: inherit;">
+                <div class="element halogen" data-number="53">I</div>
+            </a>
+            
+            <a href="Xenon.html" style="text-decoration: none; color: inherit;">
+                <div class="element noble" data-number="54">Xe</div>
+            </a>
             
             
             <!-- Row 6 -->
-        <a href="Cesium.html" style="text-decoration: none; color: inherit;">
             <div class="element alkali" data-number="55" style="grid-column: 1;">Cs</div>
-        </a>
-        <a href="Barium.html" style="text-decoration: none; color: inherit;">
-                <div class="element alkaline" data-number="56">Ba</div>
-        </a>
-        <a href="Lanthanum.html" style="text-decoration: none; color: inherit;">
-             <div class="element lanthanide" data-number="57">La</div>
+            <div class="element alkaline" data-number="56">Ba</div>
+            <a href="Lanthanum.html" style="text-decoration: none; color: inherit;">
+    <div class="element lanthanide" data-number="57">La</div>
         </a>
         <a href="Hafnium.html" style="text-decoration: none; color: inherit;">
             <div class="element transition" data-number="72" style="grid-column: 4;">Hf</div>
@@ -1179,6 +1191,15 @@ header {
             </div>
         </div>
     </div>
+    <!-- Category Info Modal -->
+<div id="category-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
+    <div style="background: #222; border-radius: 8px; max-width: 500px; width: 90%; padding: 20px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+        <button id="close-modal" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: #999; font-size: 20px; cursor: pointer;">×</button>
+        <h3 id="category-title" style="margin-top: 0; color: white; border-bottom: 1px solid #444; padding-bottom: 10px;"></h3>
+        <p id="category-description" style="color: #ccc; line-height: 1.5;"></p>
+        <div id="category-properties" style="color: #aaa; font-size: 14px; margin-top: 15px;"></div>
+    </div>
+</div>
     <footer class="footer">
         <p>2025 Interactive Periodic Table Sandbox | Educational Chemistry Tool</p>
     </footer>
@@ -1410,6 +1431,90 @@ header {
             event.target.style.outline = 'none';
         }
     });
+
+    // Legend click functionality
+document.querySelectorAll('.legend-item').forEach(item => {
+    item.style.cursor = 'pointer';
+    
+    item.addEventListener('click', function() {
+        const categoryType = this.querySelector('.legend-color').className.replace('legend-color ', '');
+        const categoryName = this.querySelector('span').textContent;
+        const modal = document.getElementById('category-modal');
+        const modalTitle = document.getElementById('category-title');
+        const modalDescription = document.getElementById('category-description');
+        const modalProperties = document.getElementById('category-properties');
+        
+        // Set the category name
+        modalTitle.textContent = categoryName;
+        
+        // Set category description and properties based on type
+        const categoryInfo = getCategoryInfo(categoryType);
+        modalDescription.textContent = categoryInfo.description;
+        modalProperties.innerHTML = categoryInfo.properties;
+        
+        // Display the modal with flex display
+        modal.style.display = 'flex';
+    });
+});
+
+// Close modal when clicking the close button
+document.getElementById('close-modal').addEventListener('click', function() {
+    document.getElementById('category-modal').style.display = 'none';
+});
+
+// Close modal when clicking outside the content
+document.getElementById('category-modal').addEventListener('click', function(event) {
+    if (event.target === this) {
+        this.style.display = 'none';
+    }
+});
+
+// Function to get category information
+function getCategoryInfo(categoryType) {
+    const info = {
+        'alkali': {
+            description: 'Alkali metals are highly reactive metals in Group 1 of the periodic table. They are characterized by having a single valence electron that they readily donate in chemical reactions.',
+            properties: '<b>Properties:</b><ul style="margin-top: 5px; padding-left: 20px;"><li>Soft, silvery metals</li><li>Low melting and boiling points</li><li>High reactivity with water</li><li>Low electronegativity</li><li>Examples: Lithium (Li), Sodium (Na), Potassium (K)</li></ul>'
+        },
+        'alkaline': {
+            description: 'Alkaline earth metals are in Group 2 of the periodic table. They are less reactive than alkali metals but still highly reactive, with two valence electrons.',
+            properties: '<b>Properties:</b><ul style="margin-top: 5px; padding-left: 20px;"><li>Silvery-white, somewhat reactive metals</li><li>Higher melting points than alkali metals</li><li>React with water to form basic hydroxides</li><li>Examples: Beryllium (Be), Magnesium (Mg), Calcium (Ca)</li></ul>'
+        },
+        'transition': {
+            description: 'Transition metals occupy the middle of the periodic table, in the d-block. They are characterized by partially filled d-orbitals, which gives them unique properties.',
+            properties: '<b>Properties:</b><ul style="margin-top: 5px; padding-left: 20px;"><li>Good conductors of heat and electricity</li><li>High melting and boiling points</li><li>Often form colored compounds</li><li>Can have multiple oxidation states</li><li>Examples: Iron (Fe), Copper (Cu), Gold (Au)</li></ul>'
+        },
+        'metalloid': {
+            description: 'Metalloids or semimetals have properties of both metals and nonmetals. They are located along the diagonal line between boron and polonium on the periodic table.',
+            properties: '<b>Properties:</b><ul style="margin-top: 5px; padding-left: 20px;"><li>Intermediate electrical conductivity</li><li>Brittle solids</li><li>Can form alloys with other metals</li><li>Often semiconductors</li><li>Examples: Silicon (Si), Arsenic (As), Antimony (Sb)</li></ul>'
+        },
+        'nonmetal': {
+            description: 'Nonmetals are elements located on the right side of the periodic table (except for hydrogen). They generally have low melting and boiling points and are poor conductors of heat and electricity.',
+            properties: '<b>Properties:</b><ul style="margin-top: 5px; padding-left: 20px;"><li>Poor conductors of heat and electricity</li><li>Many are gases at room temperature</li><li>Brittle as solids</li><li>High electronegativity</li><li>Examples: Carbon (C), Oxygen (O), Phosphorus (P)</li></ul>'
+        },
+        'halogen': {
+            description: 'Halogens are highly reactive nonmetal elements in Group 17 of the periodic table. They are one electron short of a complete outer shell, making them eager to form ionic bonds.',
+            properties: '<b>Properties:</b><ul style="margin-top: 5px; padding-left: 20px;"><li>Highly reactive nonmetals</li><li>Exist as diatomic molecules</li><li>Toxic in elemental form</li><li>Form salts with metals</li><li>Examples: Fluorine (F), Chlorine (Cl), Bromine (Br)</li></ul>'
+        },
+        'noble': {
+            description: 'Noble gases are in Group 18 of the periodic table. They have complete outer electron shells, making them extremely stable and unreactive under normal conditions.',
+            properties: '<b>Properties:</b><ul style="margin-top: 5px; padding-left: 20px;"><li>Extremely low reactivity</li><li>Colorless, odorless gases at room temperature</li><li>Low boiling points</li><li>Used in lighting and cryogenics</li><li>Examples: Helium (He), Neon (Ne), Argon (Ar)</li></ul>'
+        },
+        'lanthanide': {
+            description: 'Lanthanides are the 15 elements from lanthanum to lutetium (atomic numbers 57-71). They are part of the f-block and are characterized by the filling of 4f electron orbitals.',
+            properties: '<b>Properties:</b><ul style="margin-top: 5px; padding-left: 20px;"><li>Silvery-white, soft metals</li><li>High electrical conductivity</li><li>Similar chemical properties</li><li>Many have magnetic properties</li><li>Examples: Cerium (Ce), Neodymium (Nd), Europium (Eu)</li></ul>'
+        },
+        'actinide': {
+            description: 'Actinides are the 15 elements from actinium to lawrencium (atomic numbers 89-103). Like lanthanides, they are part of the f-block, with 5f orbitals being filled.',
+            properties: '<b>Properties:</b><ul style="margin-top: 5px; padding-left: 20px;"><li>All are radioactive</li><li>Most are synthetic (not naturally occurring)</li><li>Similar chemical properties</li><li>Many have important applications in nuclear energy</li><li>Examples: Uranium (U), Plutonium (Pu), Thorium (Th)</li></ul>'
+        }
+    };
+    
+    return info[categoryType] || {
+        description: 'Information not available for this category.',
+        properties: ''
+    };
+}
 </script>
 </html>
 </html>
