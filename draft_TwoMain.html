@@ -1206,233 +1206,285 @@ header {
 </body>
 <script>
     // Get references to the search input and all element divs
-    const searchInput = document.querySelector('.search-input');
-    const elementDivs = document.querySelectorAll('.element');
+const searchInput = document.querySelector('.search-input');
+const elementDivs = document.querySelectorAll('.element');
+
+// Create a results dropdown
+const searchContainer = document.querySelector('.search-container');
+const resultsDropdown = document.createElement('div');
+resultsDropdown.className = 'search-results';
+resultsDropdown.style.cssText = `
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #222;
+    border: 1px solid #444;
+    border-radius: 4px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 100;
+    display: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+`;
+searchContainer.appendChild(resultsDropdown);
+
+// Add event listener for the search input
+searchInput.addEventListener('input', function() {
+    const searchText = this.value.toLowerCase();
     
-    // Create a results dropdown
-    const searchContainer = document.querySelector('.search-container');
-    const resultsDropdown = document.createElement('div');
-    resultsDropdown.className = 'search-results';
-    resultsDropdown.style.cssText = `
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: #222;
-        border: 1px solid #444;
-        border-radius: 4px;
-        max-height: 300px;
-        overflow-y: auto;
-        z-index: 100;
-        display: none;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    `;
-    searchContainer.appendChild(resultsDropdown);
+    // Clear previous results
+    resultsDropdown.innerHTML = '';
     
-    // Add event listener for the search input
-    searchInput.addEventListener('input', function() {
-        const searchText = this.value.toLowerCase();
+    // Hide dropdown if search is empty
+    if (searchText === '') {
+        resultsDropdown.style.display = 'none';
+        return;
+    }
+    
+    // Find matching elements
+    const matches = [];
+    elementDivs.forEach(element => {
+        const elementSymbol = element.textContent.toLowerCase();
+        const elementNumber = element.getAttribute('data-number');
         
-        // Clear previous results
-        resultsDropdown.innerHTML = '';
-        
-        // Hide dropdown if search is empty
-        if (searchText === '') {
-            resultsDropdown.style.display = 'none';
-            return;
-        }
-        
-        // Find matching elements
-        const matches = [];
-        elementDivs.forEach(element => {
-            const elementSymbol = element.textContent.toLowerCase();
-            const elementNumber = element.getAttribute('data-number');
+        // Get the element name from the link
+        let elementName = '';
+        let elementUrl = '';
+        const parentAnchor = element.closest('a');
+        if (parentAnchor) {
+            elementName = parentAnchor.getAttribute('href').toLowerCase().replace('.html', '');
+            elementUrl = parentAnchor.getAttribute('href');
             
-            // Get the element name from the link
-            let elementName = '';
-            let elementUrl = '';
-            const parentAnchor = element.closest('a');
-            if (parentAnchor) {
-                elementName = parentAnchor.getAttribute('href').toLowerCase().replace('.html', '');
-                elementUrl = parentAnchor.getAttribute('href');
-                
-                // Check if the search text matches symbol, number or name
-                if (elementSymbol.includes(searchText) || 
-                    elementNumber.includes(searchText) ||
-                    elementName.includes(searchText)) {
-                        
-                    matches.push({
-                        symbol: element.textContent,
-                        number: elementNumber,
-                        name: elementName.charAt(0).toUpperCase() + elementName.slice(1),
-                        url: elementUrl,
-                        category: element.className.replace('element ', '')
-                    });
+            // Extract category from element class
+            let category = '';
+            const elementClasses = element.className.replace('element ', '').split(' ');
+            
+            for (const cls of elementClasses) {
+                if (cls.includes('alkali') || 
+                    cls.includes('alkaline') || 
+                    cls.includes('transition') || 
+                    cls.includes('metalloid') || 
+                    cls.includes('nonmetal') || 
+                    cls.includes('halogen') || 
+                    cls.includes('noble') || 
+                    cls.includes('lanthanide') || 
+                    cls.includes('actinide')) {
+                    
+                    category = cls;
+                    break;
                 }
             }
+            
+            // Format category for display
+            const formattedCategory = formatCategory(category);
+            
+            // Check if the search text matches symbol, number, name, or category
+            if (elementSymbol.includes(searchText) || 
+                elementNumber.includes(searchText) ||
+                elementName.includes(searchText) ||
+                category.includes(searchText) ||
+                formattedCategory.toLowerCase().includes(searchText)) {
+                    
+                matches.push({
+                    symbol: element.textContent,
+                    number: elementNumber,
+                    name: elementName.charAt(0).toUpperCase() + elementName.slice(1),
+                    url: elementUrl,
+                    category: category,
+                    displayCategory: formattedCategory
+                });
+            }
+        }
+    });
+    
+    // Display results in dropdown
+    if (matches.length > 0) {
+        matches.forEach(match => {
+            const resultItem = document.createElement('div');
+            resultItem.className = 'search-result-item';
+            resultItem.style.cssText = `
+                padding: 10px 15px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                border-bottom: 1px solid #333;
+                transition: background-color 0.2s;
+            `;
+            
+            // Create color indicator dot
+            const colorDot = document.createElement('span');
+            colorDot.style.cssText = `
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                margin-right: 10px;
+                background: linear-gradient(135deg, #222, #444);
+            `;
+            
+            // Set the right color based on category
+            if (match.category.includes('alkali')) {
+                colorDot.style.background = 'linear-gradient(135deg, #722F37, #9E3F49)';
+            } else if (match.category.includes('alkaline')) {
+                colorDot.style.background = 'linear-gradient(135deg, #994D00, #CC6600)';
+            } else if (match.category.includes('transition')) {
+                colorDot.style.background = 'linear-gradient(135deg, #2D5986, #4682B4)';
+            } else if (match.category.includes('metalloid')) {
+                colorDot.style.background = 'linear-gradient(135deg, #556B2F, #6B8E23)';
+            } else if (match.category.includes('nonmetal')) {
+                colorDot.style.background = 'linear-gradient(135deg, #3B444B, #5E6A75)';
+            } else if (match.category.includes('halogen')) {
+                colorDot.style.background = 'linear-gradient(135deg, #663399, #7851A9)';
+            } else if (match.category.includes('noble')) {
+                colorDot.style.background = 'linear-gradient(135deg, #A93226, #CD6155)';
+            } else if (match.category.includes('lanthanide')) {
+                colorDot.style.background = 'linear-gradient(135deg, #1A5276, #2980B9)';
+            } else if (match.category.includes('actinide')) {
+                colorDot.style.background = 'linear-gradient(135deg, #196F3D, #27AE60)';
+            }
+            
+            resultItem.appendChild(colorDot);
+            
+            // Add element details
+            const detailsDiv = document.createElement('div');
+            detailsDiv.innerHTML = `
+                <div style="font-weight: bold; color: white;">${match.name}</div>
+                <div style="display: flex; gap: 10px; color: #aaa; font-size: 12px;">
+                    <span>${match.symbol}</span>
+                    <span>Element ${match.number}</span>
+                    <span>${match.displayCategory}</span>
+                </div>
+            `;
+            resultItem.appendChild(detailsDiv);
+            
+            // Add hover effect
+            resultItem.addEventListener('mouseover', function() {
+                this.style.backgroundColor = '#333';
+            });
+            resultItem.addEventListener('mouseout', function() {
+                this.style.backgroundColor = 'transparent';
+            });
+            
+            // Add click handler to navigate
+            resultItem.addEventListener('click', function() {
+                window.location.href = match.url;
+            });
+            
+            resultsDropdown.appendChild(resultItem);
         });
         
-        // Display results in dropdown
-        if (matches.length > 0) {
-            matches.forEach(match => {
-                const resultItem = document.createElement('div');
-                resultItem.className = 'search-result-item';
-                resultItem.style.cssText = `
-                    padding: 10px 15px;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    border-bottom: 1px solid #333;
-                    transition: background-color 0.2s;
-                `;
-                
-                // Create color indicator dot
-                const colorDot = document.createElement('span');
-                colorDot.style.cssText = `
-                    width: 12px;
-                    height: 12px;
-                    border-radius: 50%;
-                    margin-right: 10px;
-                    background: linear-gradient(135deg, #222, #444);
-                `;
-                
-                // Set the right color based on category
-                if (match.category.includes('alkali')) {
-                    colorDot.style.background = 'linear-gradient(135deg, #722F37, #9E3F49)';
-                } else if (match.category.includes('alkaline')) {
-                    colorDot.style.background = 'linear-gradient(135deg, #994D00, #CC6600)';
-                } else if (match.category.includes('transition')) {
-                    colorDot.style.background = 'linear-gradient(135deg, #2D5986, #4682B4)';
-                } else if (match.category.includes('metalloid')) {
-                    colorDot.style.background = 'linear-gradient(135deg, #556B2F, #6B8E23)';
-                } else if (match.category.includes('nonmetal')) {
-                    colorDot.style.background = 'linear-gradient(135deg, #3B444B, #5E6A75)';
-                } else if (match.category.includes('halogen')) {
-                    colorDot.style.background = 'linear-gradient(135deg, #663399, #7851A9)';
-                } else if (match.category.includes('noble')) {
-                    colorDot.style.background = 'linear-gradient(135deg, #A93226, #CD6155)';
-                } else if (match.category.includes('lanthanide')) {
-                    colorDot.style.background = 'linear-gradient(135deg, #1A5276, #2980B9)';
-                } else if (match.category.includes('actinide')) {
-                    colorDot.style.background = 'linear-gradient(135deg, #196F3D, #27AE60)';
-                }
-                
-                resultItem.appendChild(colorDot);
-                
-                // Add element details
-                const detailsDiv = document.createElement('div');
-                detailsDiv.innerHTML = `
-                    <div style="font-weight: bold; color: white;">${match.name}</div>
-                    <div style="display: flex; gap: 10px; color: #aaa; font-size: 12px;">
-                        <span>${match.symbol}</span>
-                        <span>Element ${match.number}</span>
-                    </div>
-                `;
-                resultItem.appendChild(detailsDiv);
-                
-                // Add hover effect
-                resultItem.addEventListener('mouseover', function() {
-                    this.style.backgroundColor = '#333';
-                });
-                resultItem.addEventListener('mouseout', function() {
-                    this.style.backgroundColor = 'transparent';
-                });
-                
-                // Add click handler to navigate
-                resultItem.addEventListener('click', function() {
-                    window.location.href = match.url;
-                });
-                
-                resultsDropdown.appendChild(resultItem);
-            });
-            
-            resultsDropdown.style.display = 'block';
-        } else {
-            // Show "no results" message
-            const noResults = document.createElement('div');
-            noResults.style.cssText = `
-                padding: 15px;
-                color: #aaa;
-                text-align: center;
-            `;
-            noResults.textContent = 'No matching elements found';
-            resultsDropdown.appendChild(noResults);
-            resultsDropdown.style.display = 'block';
-        }
-    });
-    
-    // Hide dropdown when clicking outside
-    document.addEventListener('click', function(event) {
-        if (!searchContainer.contains(event.target)) {
-            resultsDropdown.style.display = 'none';
-        }
-    });
-    
-    // Add functionality to search button
-    const searchButton = document.querySelector('.search-button');
-    searchButton.addEventListener('click', function(event) {
-        event.preventDefault();
-        // Trigger search as if user typed
-        const inputEvent = new Event('input');
-        searchInput.dispatchEvent(inputEvent);
-    });
-    
-    // Add keyboard navigation for the dropdown
-    searchInput.addEventListener('keydown', function(event) {
-        const results = resultsDropdown.querySelectorAll('.search-result-item');
-        
-        // Get currently focused item
-        const focused = document.activeElement;
-        let currentIndex = -1;
-        
-        if (focused && focused.classList.contains('search-result-item')) {
-            // Find the index of the currently focused item
-            results.forEach((item, index) => {
-                if (item === focused) {
-                    currentIndex = index;
-                }
-            });
-        }
-        
-        if (event.key === 'ArrowDown') {
-            event.preventDefault();
-            // Move focus to the next item or first if none is focused
-            if (results.length > 0) {
-                const nextIndex = (currentIndex + 1) % results.length;
-                results[nextIndex].focus();
-            }
-        } else if (event.key === 'ArrowUp') {
-            event.preventDefault();
-            // Move focus to the previous item or last if none is focused
-            if (results.length > 0) {
-                const prevIndex = currentIndex <= 0 ? results.length - 1 : currentIndex - 1;
-                results[prevIndex].focus();
-            }
-        } else if (event.key === 'Enter') {
-            // Navigate to the focused item or first result if none focused
-            if (focused && focused.classList.contains('search-result-item')) {
-                event.preventDefault();
-                focused.click();
-            } else if (results.length > 0) {
-                event.preventDefault();
-                results[0].click();
-            }
-        } else if (event.key === 'Escape') {
-            // Hide dropdown
-            resultsDropdown.style.display = 'none';
-            searchInput.blur();
-        }
-    });
-    
-    // Make search result items focusable
-    resultsDropdown.addEventListener('DOMNodeInserted', function(event) {
-        if (event.target.classList && event.target.classList.contains('search-result-item')) {
-            event.target.setAttribute('tabindex', '0');
-            event.target.style.outline = 'none';
-        }
-    });
+        resultsDropdown.style.display = 'block';
+    } else {
+        // Show "no results" message
+        const noResults = document.createElement('div');
+        noResults.style.cssText = `
+            padding: 15px;
+            color: #aaa;
+            text-align: center;
+        `;
+        noResults.textContent = 'No matching elements found';
+        resultsDropdown.appendChild(noResults);
+        resultsDropdown.style.display = 'block';
+    }
+});
 
-    // Legend click functionality
+// Function to format category name for display
+function formatCategory(category) {
+    if (category.includes('alkali') && !category.includes('alkaline')) {
+        return 'Alkali Metal';
+    } else if (category.includes('alkaline')) {
+        return 'Alkaline Earth Metal';
+    } else if (category.includes('transition')) {
+        return 'Transition Metal';
+    } else if (category.includes('metalloid')) {
+        return 'Metalloid';
+    } else if (category.includes('nonmetal')) {
+        return 'Nonmetal';
+    } else if (category.includes('halogen')) {
+        return 'Halogen';
+    } else if (category.includes('noble')) {
+        return 'Noble Gas';
+    } else if (category.includes('lanthanide')) {
+        return 'Lanthanide';
+    } else if (category.includes('actinide')) {
+        return 'Actinide';
+    } else {
+        return 'Other';
+    }
+}
+
+// Hide dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    if (!searchContainer.contains(event.target)) {
+        resultsDropdown.style.display = 'none';
+    }
+});
+
+// Add functionality to search button
+const searchButton = document.querySelector('.search-button');
+searchButton.addEventListener('click', function(event) {
+    event.preventDefault();
+    // Trigger search as if user typed
+    const inputEvent = new Event('input');
+    searchInput.dispatchEvent(inputEvent);
+});
+
+// Add keyboard navigation for the dropdown
+searchInput.addEventListener('keydown', function(event) {
+    const results = resultsDropdown.querySelectorAll('.search-result-item');
+    
+    // Get currently focused item
+    const focused = document.activeElement;
+    let currentIndex = -1;
+    
+    if (focused && focused.classList.contains('search-result-item')) {
+        // Find the index of the currently focused item
+        results.forEach((item, index) => {
+            if (item === focused) {
+                currentIndex = index;
+            }
+        });
+    }
+    
+    if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        // Move focus to the next item or first if none is focused
+        if (results.length > 0) {
+            const nextIndex = (currentIndex + 1) % results.length;
+            results[nextIndex].focus();
+        }
+    } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        // Move focus to the previous item or last if none is focused
+        if (results.length > 0) {
+            const prevIndex = currentIndex <= 0 ? results.length - 1 : currentIndex - 1;
+            results[prevIndex].focus();
+        }
+    } else if (event.key === 'Enter') {
+        // Navigate to the focused item or first result if none focused
+        if (focused && focused.classList.contains('search-result-item')) {
+            event.preventDefault();
+            focused.click();
+        } else if (results.length > 0) {
+            event.preventDefault();
+            results[0].click();
+        }
+    } else if (event.key === 'Escape') {
+        // Hide dropdown
+        resultsDropdown.style.display = 'none';
+        searchInput.blur();
+    }
+});
+
+// Make search result items focusable
+resultsDropdown.addEventListener('DOMNodeInserted', function(event) {
+    if (event.target.classList && event.target.classList.contains('search-result-item')) {
+        event.target.setAttribute('tabindex', '0');
+        event.target.style.outline = 'none';
+    }
+});
+
+// Legend click functionality
 document.querySelectorAll('.legend-item').forEach(item => {
     item.style.cursor = 'pointer';
     
